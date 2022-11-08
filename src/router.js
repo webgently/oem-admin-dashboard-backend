@@ -9,6 +9,15 @@ import {
   addCredit,
   subtractCredit,
 } from "./controllers/sign";
+
+import {
+  addService,
+  updateService,
+  getAllService,
+  getOneService,
+  deleteService
+} from "./controllers/service";
+
 // import {
 //   create,
 //   get,
@@ -32,6 +41,7 @@ import {
 // const Uploader = new FileUploader(path.join(fileconfig.BASEURL));
 
 const router = routerx();
+// user
 router.post("/signup", signup);
 router.post("/signin", signin);
 router.get("/getUserData", getUserData);
@@ -40,6 +50,15 @@ router.post("/updatestatus", updatestatus);
 router.post("/deleteUser", deleteUser);
 router.post("/addCredit", addCredit);
 router.post("/subtractCredit", subtractCredit);
+// service 
+router.post("/addService", addService);
+router.post("/updateService", updateService);
+router.post("/getAllService", getAllService);
+router.post("/getOneService", getOneService);
+router.post("/deleteService", deleteService);
+
+
+
 // router.post("/create-user", createUser);
 // router.post("/check-wallet", updateUserWallet);
 // router.post("/create", create);
