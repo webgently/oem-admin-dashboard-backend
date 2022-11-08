@@ -70,3 +70,10 @@ export const addCredit = async (req, res, next) => {
   await Users.updateOne({ _id: req.body.data._id }, { credit: updateCredit });
   res.send("success");
 };
+
+export const subtractCredit = async (req, res, next) => {
+  let credit = await Users.find({_id: req.body.data._id});
+  let updateCredit = Number(credit[0].credit) - Number(req.body.data.credit);
+  await Users.updateOne({ _id: req.body.data._id }, { credit: updateCredit });
+  res.send("success");
+};

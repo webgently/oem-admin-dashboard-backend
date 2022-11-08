@@ -7,6 +7,7 @@ import {
   updatestatus,
   deleteUser,
   addCredit,
+  subtractCredit,
 } from "./controllers/sign";
 // import {
 //   create,
@@ -38,6 +39,7 @@ router.post("/updateNote", updateNote);
 router.post("/updatestatus", updatestatus);
 router.post("/deleteUser", deleteUser);
 router.post("/addCredit", addCredit);
+router.post("/subtractCredit", subtractCredit);
 // router.post("/create-user", createUser);
 // router.post("/check-wallet", updateUserWallet);
 // router.post("/create", create);
