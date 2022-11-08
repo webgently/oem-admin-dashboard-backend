@@ -31,7 +31,6 @@ export const getAllService = async (req, res, next) => {
 export const getOneService = async (req, res, next) => {
     const service = await Service.findOne({ _id: req.body._id });
     if (service) {
-        console.log(service);
         res.send(service);
     } 
 };

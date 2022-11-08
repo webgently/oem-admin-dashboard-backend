@@ -27,7 +27,7 @@ export const signin = async (req, res, next) => {
   const user = await Users.findOne({ email: mail });
   if (user !== null) {
     if (user.password === pass) {
-      res.send(user.permission);
+      res.send(user);
     } else {
       res.send("password");
     }

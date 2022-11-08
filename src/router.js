@@ -22,6 +22,15 @@ import {
   getDashBoardData
 } from "./controllers/dashboard";
 
+import {
+  addPrice,
+  updatePrice,
+  deletePrice,
+  getAllPrice,
+  getOnePrice,
+  getServiceType
+} from "./controllers/price"
+
 // import {
 //   create,
 //   get,
@@ -62,7 +71,13 @@ router.post("/getOneService", getOneService);
 router.post("/deleteService", deleteService);
 // dashboard 
 router.post("/getDashBoardData", getDashBoardData);
-
+// price lists
+router.post("/getServiceType", getServiceType);
+router.post("/addPrice", addPrice);
+router.post("/updatePrice", updatePrice);
+router.post("/deletePrice", deletePrice);
+router.post("/getAllPrice", getAllPrice);
+router.post("/getOnePrice", getOnePrice);
 
 // router.post("/create-user", createUser);
 // router.post("/check-wallet", updateUserWallet);

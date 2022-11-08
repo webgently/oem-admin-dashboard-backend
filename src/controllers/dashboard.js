@@ -6,7 +6,6 @@ export const getDashBoardData = async (req, res, next) => {
     const user = await Users.find({});
     const service = await Service.find({});
     dashboard.userCount = user.length;
-    console.log(service.length);
     dashboard.serviceCount = service.length;
     res.send(dashboard);
 };

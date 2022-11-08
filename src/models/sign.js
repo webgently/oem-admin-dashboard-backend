@@ -13,10 +13,10 @@ const usersSchema = new Schema({
   checkflag: { type: String, require: true },
   password: { type: String, require: true },
   permission: { type: String, require: true },
-  note: { type: String, requir: true },
-  date: { type: String, requir: true },
-  credit: { type: String, requir: true },
-  status: { type: String, requir: true },
-  profile: { type: String, requir: true },
+  note: { type: String, require: true },
+  date: { type: String, require: true },
+  credit: { type: String, require: true },
+  status: { type: String, require: true },
+  profile: { type: String, require: true },
 });
 export const Users = model("users", usersSchema);
