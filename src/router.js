@@ -18,6 +18,10 @@ import {
   deleteService
 } from "./controllers/service";
 
+import {
+  getDashBoardData
+} from "./controllers/dashboard";
+
 // import {
 //   create,
 //   get,
@@ -56,7 +60,8 @@ router.post("/updateService", updateService);
 router.post("/getAllService", getAllService);
 router.post("/getOneService", getOneService);
 router.post("/deleteService", deleteService);
-
+// dashboard 
+router.post("/getDashBoardData", getDashBoardData);
 
 
 // router.post("/create-user", createUser);
