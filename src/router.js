@@ -31,27 +31,15 @@ import {
   getServiceType
 } from "./controllers/price"
 
-// import {
-//   create,
-//   get,
-//   buy,
-//   getWinner,
-//   checkNFT,
-//   createUser,
-//   updateUserWallet,
-//   newWL,
-//   imageMulti,
-//   Uploadfiles,
-// } from "./controllers/raffleController";
-
-// const express = require("express");
-// const multer = require("multer");
-// const FileUploader = require("./upload.js");
-// const path = require("path");
-// trending
-
-// const fileconfig = require("./dir");
-// const Uploader = new FileUploader(path.join(fileconfig.BASEURL));
+import {
+  createCredit,
+  updateCredit,
+  deleteCredit,
+  getAllCredit,
+  getOneCredit,
+  updateFee,
+  getFee
+} from "./controllers/credit"
 
 const router = routerx();
 // user
@@ -78,19 +66,14 @@ router.post("/updatePrice", updatePrice);
 router.post("/deletePrice", deletePrice);
 router.post("/getAllPrice", getAllPrice);
 router.post("/getOnePrice", getOnePrice);
+// credit lists
+router.post("/createCredit", createCredit);
+router.post("/updateCredit", updateCredit);
+router.post("/deleteCredit", deleteCredit);
+router.post("/getAllCredit", getAllCredit);
+router.post("/getOneCredit", getOneCredit);
+router.post("/updateFee", updateFee);
+router.post("/getFee", getFee);
 
-// router.post("/create-user", createUser);
-// router.post("/check-wallet", updateUserWallet);
-// router.post("/create", create);
-// router.post(
-//   "/newWL",
-//   multer({ storage: Uploader.storage, fileFilter: Uploader.filter }).any(),
-//   imageMulti,
-//   newWL
-// );
-// router.get("/get", get);
-// router.post("/get_winner", getWinner);
-// router.post("/buy", buy);
-// router.post("/check-id", checkNFT);
 
 export default router;
