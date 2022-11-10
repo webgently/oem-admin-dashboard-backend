@@ -41,6 +41,25 @@ import {
   getFee
 } from "./controllers/credit"
 
+import {
+  updateProfile,
+  savePrivacy,
+  getPrivacy,
+  changePassword,
+  getAllDaily,
+  updateDaily,
+  getOneDaily,
+  uploadLogo,
+  uploadDataSave,
+  getLogo,
+} from "./controllers/setting.js"
+
+const multer = require("multer");
+const FileUploader = require("./upload.js");
+const path = require("path");
+const fileconfig = require("./dir");
+const Uploader = new FileUploader(path.join(fileconfig.logoBaseUrl));
+
 const router = routerx();
 // user
 router.post("/signup", signup);
@@ -50,6 +69,7 @@ router.post("/updateNote", updateNote);
 router.post("/updatestatus", updatestatus);
 router.post("/deleteUser", deleteUser);
 router.post("/addCredit", addCredit);
+router.post("/subtractCredit", subtractCredit);
 router.post("/subtractCredit", subtractCredit);
 // service 
 router.post("/addService", addService);
@@ -74,6 +94,21 @@ router.post("/getAllCredit", getAllCredit);
 router.post("/getOneCredit", getOneCredit);
 router.post("/updateFee", updateFee);
 router.post("/getFee", getFee);
-
+// setting 
+router.post("/updateProfile", updateProfile);
+router.post("/savePrivacy", savePrivacy);
+router.post("/getPrivacy", getPrivacy);
+router.post("/changePassword", changePassword);
+router.post("/getAllDaily", getAllDaily);
+router.post("/updateDaily", updateDaily);
+router.post("/getOneDaily", getOneDaily);
+router.post("/uploadLogo", uploadLogo);
+router.post(
+  "/uploadLogo",
+  multer({ storage: Uploader.storage, fileFilter: Uploader.filter }).any(),
+  uploadLogo,
+  uploadDataSave
+);
+router.post("/getLogo", getLogo);
 
 export default router;

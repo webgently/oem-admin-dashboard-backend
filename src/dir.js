@@ -1,4 +1,4 @@
 module.exports = {
   dir: __dirname,
-  BASEURL: __dirname + "/upload/",
+  logoBaseUrl: __dirname + "/upload/logo/",
 };
