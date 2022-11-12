@@ -15,12 +15,10 @@ import {
   updateService,
   getAllService,
   getOneService,
-  deleteService
+  deleteService,
 } from "./controllers/service";
 
-import {
-  getDashBoardData
-} from "./controllers/dashboard";
+import { getDashBoardData } from "./controllers/dashboard";
 
 import {
   addPrice,
@@ -28,8 +26,8 @@ import {
   deletePrice,
   getAllPrice,
   getOnePrice,
-  getServiceType
-} from "./controllers/price"
+  getServiceType,
+} from "./controllers/price";
 
 import {
   createCredit,
@@ -38,8 +36,8 @@ import {
   getAllCredit,
   getOneCredit,
   updateFee,
-  getFee
-} from "./controllers/credit"
+  getFee,
+} from "./controllers/credit";
 
 import {
   updateProfile,
@@ -52,14 +50,23 @@ import {
   uploadLogo,
   uploadDataSave,
   getLogo,
-} from "./controllers/setting.js"
+} from "./controllers/setting";
+
+import {
+  getSupportID,
+  getUserList,
+  getChattingHistory,
+} from "./controllers/support";
+// user
+import { uploadFile, uploadFileDataSave } from "./controllers/user/upload";
+import { getDataByOrderID, getDataByFilter } from "./controllers/user/overview";
 
 const multer = require("multer");
 const FileUploader = require("./upload.js");
 const path = require("path");
 const fileconfig = require("./dir");
-const Uploader = new FileUploader(path.join(fileconfig.logoBaseUrl));
-
+const Uploader1 = new FileUploader(path.join(fileconfig.logoBaseUrl));
+const Uploader2 = new FileUploader(path.join(fileconfig.fileServiceUrl));
 const router = routerx();
 // user
 router.post("/signup", signup);
@@ -71,13 +78,13 @@ router.post("/deleteUser", deleteUser);
 router.post("/addCredit", addCredit);
 router.post("/subtractCredit", subtractCredit);
 router.post("/subtractCredit", subtractCredit);
-// service 
+// service
 router.post("/addService", addService);
 router.post("/updateService", updateService);
 router.post("/getAllService", getAllService);
 router.post("/getOneService", getOneService);
 router.post("/deleteService", deleteService);
-// dashboard 
+// dashboard
 router.post("/getDashBoardData", getDashBoardData);
 // price lists
 router.post("/getServiceType", getServiceType);
@@ -94,7 +101,7 @@ router.post("/getAllCredit", getAllCredit);
 router.post("/getOneCredit", getOneCredit);
 router.post("/updateFee", updateFee);
 router.post("/getFee", getFee);
-// setting 
+// setting
 router.post("/updateProfile", updateProfile);
 router.post("/savePrivacy", savePrivacy);
 router.post("/getPrivacy", getPrivacy);
@@ -105,10 +112,25 @@ router.post("/getOneDaily", getOneDaily);
 router.post("/uploadLogo", uploadLogo);
 router.post(
   "/uploadLogo",
-  multer({ storage: Uploader.storage, fileFilter: Uploader.filter }).any(),
+  multer({ storage: Uploader1.storage, fileFilter: Uploader1.filter }).any(),
   uploadLogo,
   uploadDataSave
 );
 router.post("/getLogo", getLogo);
+// support
+router.post("/getSupportID", getSupportID);
+router.post("/getUserList", getUserList);
+router.post("/getChattingHistory", getChattingHistory);
+
+// --------------------user--------------------
+router.post(
+  "/uploadFile",
+  multer({ storage: Uploader2.storage, fileFilter: Uploader2.filter }).any(),
+  uploadFile,
+  uploadFileDataSave
+);
+// files overview
+router.post("/getDataByOrderID", getDataByOrderID);
+router.post("/getDataByFilter", getDataByFilter);
 
 export default router;
