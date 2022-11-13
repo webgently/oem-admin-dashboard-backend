@@ -2,11 +2,12 @@ import { Schema, model } from "mongoose";
 
 const creditSchema = new Schema({
   orderId: { type: String, require: true },
+  userId: { type: String, require: true },
   client: { type: String, require: true },
-  fileName: { type: String, require: true },
-  fileSize: { type: String, require: true },
-  fileType: { type: String, require: true },
-  fileRename: { type: String, require: true },
+  fileName: { type: Array, require: true },
+  fileSize: { type: Array, require: true },
+  fileType: { type: Array, require: true },
+  fileRename: { type: Array, require: true },
   vehicleType: { type: String, require: true },
   vehicleBrand: { type: String, require: true },
   vehicleSeries: { type: String, require: true },

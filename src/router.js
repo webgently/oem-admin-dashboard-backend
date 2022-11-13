@@ -57,9 +57,17 @@ import {
   getUserList,
   getChattingHistory,
 } from "./controllers/support";
+
 // user
 import { uploadFile, uploadFileDataSave } from "./controllers/user/upload";
 import { getDataByOrderID, getDataByFilter } from "./controllers/user/overview";
+import {
+  getRequests,
+  getOneRequest,
+  updateUpload,
+  uploadUploadDataSave,
+  changeStatus,
+} from "./controllers/user/requests";
 
 const multer = require("multer");
 const FileUploader = require("./upload.js");
@@ -122,7 +130,6 @@ router.post("/getSupportID", getSupportID);
 router.post("/getUserList", getUserList);
 router.post("/getChattingHistory", getChattingHistory);
 
-// --------------------user--------------------
 router.post(
   "/uploadFile",
   multer({ storage: Uploader2.storage, fileFilter: Uploader2.filter }).any(),
@@ -132,5 +139,15 @@ router.post(
 // files overview
 router.post("/getDataByOrderID", getDataByOrderID);
 router.post("/getDataByFilter", getDataByFilter);
+router.post("/getRequests", getRequests);
+router.post("/getOneRequest", getOneRequest);
+
+router.post(
+  "/updateUpload",
+  multer({ storage: Uploader2.storage, fileFilter: Uploader2.filter }).any(),
+  updateUpload,
+  uploadUploadDataSave
+);
+router.post("/changeStatus", changeStatus);
 
 export default router;
