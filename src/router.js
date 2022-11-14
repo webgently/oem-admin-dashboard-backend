@@ -68,6 +68,10 @@ import {
   uploadUploadDataSave,
   changeStatus,
 } from "./controllers/user/requests";
+import {
+  getCreditHistory,
+  getCreditByOrderID,
+} from "./controllers/user/creditHistory";
 
 const multer = require("multer");
 const FileUploader = require("./upload.js");
@@ -149,5 +153,7 @@ router.post(
   uploadUploadDataSave
 );
 router.post("/changeStatus", changeStatus);
+router.post("/getCreditHistory", getCreditHistory);
+router.post("/getCreditByOrderID", getCreditByOrderID);
 
 export default router;

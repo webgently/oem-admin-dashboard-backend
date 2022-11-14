@@ -1,4 +1,5 @@
 import { Upload } from "../../models/user/uploadFile";
+import { CreditHistory } from "../../models/user/creditHistory";
 
 export const getRequests = async (req, res, next) => {
   try {
@@ -15,7 +16,7 @@ export const getRequests = async (req, res, next) => {
 
 export const getOneRequest = async (req, res, next) => {
   try {
-    const data = await Upload.find({});
+    const data = await Upload.find({ _id: req.body.id });
     if (data) {
       res.send({ status: true, data });
     } else {
@@ -43,7 +44,7 @@ export const updateUpload = async (req, res, next) => {
 export const uploadUploadDataSave = async (req, res, next) => {
   try {
     const data = JSON.parse(req.body.data);
-    const result = await Upload.updateOne(
+    const result1 = await Upload.updateOne(
       { _id: data.id },
       {
         $push: {
@@ -56,7 +57,34 @@ export const uploadUploadDataSave = async (req, res, next) => {
         note: data.note,
       }
     );
-    if (result) {
+
+    const credit = {
+      userId: data.userId,
+      orderId: data.orderId,
+      credit: data.credit,
+      date: data.date,
+    };
+    const exist = await CreditHistory.findOne({
+      orderId: data.orderId,
+      userId: data.userId,
+    });
+    let result2;
+    if (exist) {
+      await CreditHistory.updateOne(
+        {
+          orderId: data.orderId,
+        },
+        {
+          credit: data.credit,
+          date: data.date,
+        }
+      );
+    } else {
+      const d = new CreditHistory(credit);
+      result2 = d.save();
+    }
+
+    if (result1 && result2) {
       res.send({ status: true, data: "Uploaded successfully" });
     } else {
       res.send({ status: false, data: "Interanal server error" });
