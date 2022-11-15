@@ -1,15 +1,17 @@
 import { Support } from "../models/support";
+import {Users} from "../models/sign";
 
 module.exports = (io) => {
   io.on("connection", async (socket) => {
-    // console.log(`socket.id`, socket.id);
     socket.on("disconnect", async () => {
       // console.log("disconnect socket");
     });
+
     socket.on("sendToSupport", async (e) => {
       await io.sockets.emit(e.to, { data: e });
       await saveChattingMsg(e);
     });
+
     socket.on("sendToUser", async (e) => {
       await io.sockets.emit(e.to, { data: e });
       await saveChattingMsg(e);

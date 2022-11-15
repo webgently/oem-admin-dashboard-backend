@@ -56,6 +56,9 @@ import {
   getSupportID,
   getUserList,
   getChattingHistory,
+  updateReadStatus,
+  getUserUnreadCount,
+  updateUserReadStatus,
 } from "./controllers/support";
 
 // user
@@ -133,7 +136,9 @@ router.post("/getLogo", getLogo);
 router.post("/getSupportID", getSupportID);
 router.post("/getUserList", getUserList);
 router.post("/getChattingHistory", getChattingHistory);
-
+router.post("/updateReadStatus", updateReadStatus);
+router.post("/getUserUnreadCount", getUserUnreadCount);
+router.post("/updateUserReadStatus", updateUserReadStatus);
 router.post(
   "/uploadFile",
   multer({ storage: Uploader2.storage, fileFilter: Uploader2.filter }).any(),

@@ -5,6 +5,7 @@ const supportSchema = new Schema({
   to: { type: String, require: true },
   msg: { type: String, require: true },
   date: { type: String, require: true },
+  status: { type: Boolean, require: true },
 });
 
 export const Support = model("support", supportSchema);
