@@ -1,5 +1,6 @@
 import { Upload } from "../../models/user/uploadFile";
 import { CreditHistory } from "../../models/user/creditHistory";
+import { Users } from "../../models/sign";
 
 export const getRequests = async (req, res, next) => {
   try {
@@ -64,12 +65,17 @@ export const uploadUploadDataSave = async (req, res, next) => {
       credit: data.credit,
       date: data.date,
     };
+
     const exist = await CreditHistory.findOne({
       orderId: data.orderId,
       userId: data.userId,
     });
+
     let result2;
+    let user = await Users.findOne({ _id: data.userId });
     if (exist) {
+      const updataCredit = user.credit + exist.credit - data.credit;
+      await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
       await CreditHistory.updateOne(
         {
           orderId: data.orderId,
@@ -80,15 +86,12 @@ export const uploadUploadDataSave = async (req, res, next) => {
         }
       );
     } else {
+      const updataCredit = user.credit - data.credit;
+      await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
       const d = new CreditHistory(credit);
       result2 = d.save();
     }
-
-    if (result1 && result2) {
-      res.send({ status: true, data: "Uploaded successfully" });
-    } else {
-      res.send({ status: false, data: "Interanal server error" });
-    }
+    res.send({ status: true, data: "Uploaded successfully" });
   } catch (error) {
     console.log(error);
   }
@@ -104,6 +107,24 @@ export const changeStatus = async (req, res, next) => {
     );
     if (result) {
       res.send({ status: true, data: "Uploaded successfully" });
+    } else {
+      res.send({ status: false, data: "Interanal server error" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const setRequestStatus = async (req, res, next) => {
+  try {
+    const result = await Upload.updateMany(
+      { readStatus: false },
+      {
+        readStatus: true,
+      }
+    );
+    if (result) {
+      res.send({ status: true });
     } else {
       res.send({ status: false, data: "Interanal server error" });
     }

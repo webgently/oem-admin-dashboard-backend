@@ -26,5 +26,6 @@ const creditSchema = new Schema({
   note: { type: String, require: true },
   status: { type: String, require: true },
   createdAt: { type: String, require: true },
+  readStatus: { type: Boolean, require: true },
 });
 export const Upload = model("upload", creditSchema);

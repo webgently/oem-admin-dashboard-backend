@@ -1,5 +1,5 @@
 import { Support } from "../models/support";
-import {Users} from "../models/sign";
+import { Users } from "../models/sign";
 
 module.exports = (io) => {
   io.on("connection", async (socket) => {
@@ -15,6 +15,10 @@ module.exports = (io) => {
     socket.on("sendToUser", async (e) => {
       await io.sockets.emit(e.to, { data: e });
       await saveChattingMsg(e);
+    });
+
+    socket.on("request", async (e) => {
+      await io.sockets.emit(e.to);
     });
   });
 };

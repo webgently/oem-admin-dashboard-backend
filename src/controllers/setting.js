@@ -75,14 +75,7 @@ export const getAllDaily = async (req, res, next) => {
         { day: "Saturday", open: "--:--:--", close: "--:--:--", holyday: true },
         { day: "Sunday", open: "--:--:--", close: "--:--:--", holyday: true },
       ];
-      await data.forEach(async (item) => {
-        const daily = new Daily(item);
-        const db = await daily.save();
-        await sleep(50);
-      });
-      await sleep(3000);
-      const table = await Daily.find({});
-      await sleep(1000);
+      const table = await Daily.insertMany(data);
       res.send({ status: true, table });
     }
   } catch (error) {

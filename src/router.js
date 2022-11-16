@@ -26,7 +26,11 @@ import {
   deleteService,
 } from "./controllers/service";
 
-import { getDashBoardData, getServiceTime } from "./controllers/dashboard";
+import {
+  getDashBoardData,
+  getServiceTime,
+  getSumCredit,
+} from "./controllers/dashboard";
 
 import {
   addPrice,
@@ -78,6 +82,7 @@ import {
   updateUpload,
   uploadUploadDataSave,
   changeStatus,
+  setRequestStatus,
 } from "./controllers/user/requests";
 import {
   getCreditHistory,
@@ -102,6 +107,7 @@ router.post("/deleteService", deleteService);
 // dashboard
 router.post("/getDashBoardData", getDashBoardData);
 router.post("/getServiceTime", getServiceTime);
+router.post("/getSumCredit", getSumCredit);
 // price lists
 router.post("/getServiceType", getServiceType);
 router.post("/addPrice", addPrice);
@@ -159,6 +165,7 @@ router.post(
   uploadUploadDataSave
 );
 router.post("/changeStatus", changeStatus);
+router.post("/setRequestStatus", setRequestStatus);
 router.post("/getCreditHistory", getCreditHistory);
 router.post("/getCreditByOrderID", getCreditByOrderID);
 

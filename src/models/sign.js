@@ -15,7 +15,7 @@ const usersSchema = new Schema({
   permission: { type: String, require: true },
   note: { type: String, require: true },
   date: { type: String, require: true },
-  credit: { type: String, require: true },
+  credit: { type: Number, require: true },
   status: { type: String, require: true },
   profile: { type: String, require: true },
 });
