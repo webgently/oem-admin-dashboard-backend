@@ -2,6 +2,7 @@ import { Service } from "../models/service";
 import { Users } from "../models/sign";
 import { Support } from "../models/support";
 import { Upload } from "../models/user/uploadFile";
+import { Daily } from "../models/daily";
 
 export const getDashBoardData = async (req, res, next) => {
   try {
@@ -15,6 +16,15 @@ export const getDashBoardData = async (req, res, next) => {
     dashboard.requestCount = upload.length;
     dashboard.supportCount = support.length;
     res.send(dashboard);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getServiceTime = async (req, res, next) => {
+  try {
+    const result = await Daily.findOne({ day: req.body.day });
+    res.send({ status: true, data: result });
   } catch (error) {
     console.log(error);
   }

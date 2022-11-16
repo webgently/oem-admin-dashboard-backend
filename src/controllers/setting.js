@@ -77,11 +77,12 @@ export const getAllDaily = async (req, res, next) => {
       ];
       await data.forEach(async (item) => {
         const daily = new Daily(item);
-        await sleep(200);
         const db = await daily.save();
+        await sleep(50);
       });
-      await sleep(1000);
+      await sleep(3000);
       const table = await Daily.find({});
+      await sleep(1000);
       res.send({ status: true, table });
     }
   } catch (error) {
@@ -136,7 +137,7 @@ export const uploadDataSave = async (req, res, next) => {
   const logo = new Logo(data);
   const result = await logo.save();
   if (result) {
-    return res.send({ status: true, data: result });
+    return res.send({ status: true, data: "logo/" + result.rename });
   } else {
     return res.send({ status: false, data: "Internal server error" });
   }

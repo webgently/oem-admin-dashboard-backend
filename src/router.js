@@ -1,4 +1,12 @@
 import routerx from "express-promise-router";
+const multer = require("multer");
+const FileUploader = require("./upload.js");
+const path = require("path");
+const fileconfig = require("./dir");
+const Uploader1 = new FileUploader(path.join(fileconfig.logoBaseUrl));
+const Uploader2 = new FileUploader(path.join(fileconfig.fileServiceUrl));
+const router = routerx();
+
 import {
   signup,
   signin,
@@ -18,7 +26,7 @@ import {
   deleteService,
 } from "./controllers/service";
 
-import { getDashBoardData } from "./controllers/dashboard";
+import { getDashBoardData, getServiceTime } from "./controllers/dashboard";
 
 import {
   addPrice,
@@ -76,14 +84,6 @@ import {
   getCreditByOrderID,
 } from "./controllers/user/creditHistory";
 
-const multer = require("multer");
-const FileUploader = require("./upload.js");
-const path = require("path");
-const fileconfig = require("./dir");
-const Uploader1 = new FileUploader(path.join(fileconfig.logoBaseUrl));
-const Uploader2 = new FileUploader(path.join(fileconfig.fileServiceUrl));
-const router = routerx();
-// user
 router.post("/signup", signup);
 router.post("/signin", signin);
 router.get("/getUserData", getUserData);
@@ -101,6 +101,7 @@ router.post("/getOneService", getOneService);
 router.post("/deleteService", deleteService);
 // dashboard
 router.post("/getDashBoardData", getDashBoardData);
+router.post("/getServiceTime", getServiceTime);
 // price lists
 router.post("/getServiceType", getServiceType);
 router.post("/addPrice", addPrice);
