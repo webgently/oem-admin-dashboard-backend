@@ -73,6 +73,12 @@ import {
   updateUserReadStatus,
 } from "./controllers/support";
 
+import {
+  buyCredit,
+  getAllInvoice,
+  getOneInvoice,
+} from "./controllers/user/buyCredit";
+
 // user
 import { uploadFile, uploadFileDataSave } from "./controllers/user/upload";
 import { getDataByOrderID, getDataByFilter } from "./controllers/user/overview";
@@ -168,5 +174,8 @@ router.post("/changeStatus", changeStatus);
 router.post("/setRequestStatus", setRequestStatus);
 router.post("/getCreditHistory", getCreditHistory);
 router.post("/getCreditByOrderID", getCreditByOrderID);
+router.post("/buyCredit", buyCredit);
+router.post("/getAllInvoice", getAllInvoice);
+router.post("/getOneInvoice", getOneInvoice);
 
 export default router;
