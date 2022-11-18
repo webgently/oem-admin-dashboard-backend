@@ -13,13 +13,13 @@ export const getSupportID = async (req, res, next) => {
 export const getUserList = async (req, res, next) => {
   try {
     const userList = await Users.find({ _id: { $not: { $lte: req.body.id } } });
-    const unreadCount = [];
+    const unreadCount = {};
+
     await userList.forEach(async (element) => {
       const unreadmsg = await Support.find({
         $and: [{ from: element._id }, { status: false }],
       });
-      await sleep(50);
-      await unreadCount.push(unreadmsg.length);
+      unreadCount[element._id] = unreadmsg.length;
     });
     await sleep(100);
     res.send({ status: true, userList, unreadCount: unreadCount });
@@ -53,22 +53,24 @@ export const updateReadStatus = async (req, res, next) => {
   }
 };
 
-export const getUserUnreadCount = async (req,res, next) => {
-  try{
-    const data = await Support.find({ $and: [{ to: req.body.id }, { status: false }]})
+export const getUserUnreadCount = async (req, res, next) => {
+  try {
+    const data = await Support.find({
+      $and: [{ to: req.body.id }, { status: false }],
+    });
     res.send({ status: true, unreadCount: data.length });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 export const updateUserReadStatus = async (req, res, next) => {
   try {
     await Support.updateMany(
-        {
-          to: req.body.id,
-        },
-        { status: true }
+      {
+        to: req.body.id,
+      },
+      { status: true }
     );
     res.send({ status: true });
   } catch (error) {

@@ -144,7 +144,3 @@ export const getLogo = async (req, res, next) => {
     return res.send({ status: false, data: "Internal server error" });
   }
 };
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}

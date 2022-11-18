@@ -56,6 +56,7 @@ export const uploadUploadDataSave = async (req, res, next) => {
         },
         status: data.status,
         note: data.note,
+        readStatus: true,
       }
     );
 
@@ -103,6 +104,7 @@ export const changeStatus = async (req, res, next) => {
       { _id: req.body.id },
       {
         status: "in-progress",
+        readStatus: true,
       }
     );
     if (result) {
