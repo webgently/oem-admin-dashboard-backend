@@ -37,8 +37,16 @@ export const buyCredit = async (req, res, next) => {
     other.receipt = exist.length + 1;
     other.method = token.card.brand + "-" + token.card.last4;
     const invoice = new Invoice(other);
-    const result = await invoice.save();
-    if (result) {
+    const getUserData = await Users.findOne({ _id: other.userId });
+    const sumCredit = Number(getUserData.credit) + Number(other.credits);
+    const result1 = await invoice.save();
+    const result2 = await Users.updateOne(
+      {
+        _id: other.userId,
+      },
+      { credit: sumCredit }
+    );
+    if (result1 && result2) {
       res.send({ stauts: true });
     } else {
       res.send({ stauts: false, data: "Interanal server error" });
@@ -67,6 +75,19 @@ export const getOneInvoice = async (req, res, next) => {
     const result2 = await Users.findOne({ _id: req.body.userId });
     if (result2) {
       res.send({ status: true, result1, result2 });
+    } else {
+      res.send({ status: false, data: "Interanal server error" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getUserInvoiceHistory = async (req, res, next) => {
+  try {
+    const result = await Invoice.find({ userId: req.body.id });
+    if (result) {
+      res.send({ status: true, data: result });
     } else {
       res.send({ status: false, data: "Interanal server error" });
     }

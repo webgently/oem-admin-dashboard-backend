@@ -77,6 +77,7 @@ import {
   buyCredit,
   getAllInvoice,
   getOneInvoice,
+  getUserInvoiceHistory,
 } from "./controllers/user/buyCredit";
 
 // user
@@ -177,5 +178,6 @@ router.post("/getCreditByOrderID", getCreditByOrderID);
 router.post("/buyCredit", buyCredit);
 router.post("/getAllInvoice", getAllInvoice);
 router.post("/getOneInvoice", getOneInvoice);
+router.post("/getUserInvoiceHistory", getUserInvoiceHistory);
 
 export default router;
