@@ -139,6 +139,7 @@ import {
   uploadUploadDataSave,
   changeStatus,
   setRequestStatus,
+  uploadStatusSave,
 } from "./controllers/user/requests";
 router.post("/getRequests", getRequests);
 router.post("/getOneRequest", getOneRequest);
@@ -150,6 +151,7 @@ router.post(
 );
 router.post("/changeStatus", changeStatus);
 router.post("/setRequestStatus", setRequestStatus);
+router.post("/uploadStatusSave", uploadStatusSave);
 
 /* Buy Credits */
 import {

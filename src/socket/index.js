@@ -8,17 +8,29 @@ module.exports = (io) => {
     });
 
     socket.on("sendToSupport", async (e) => {
-      await io.sockets.emit(e.to, { data: e });
+      let data = e;
+      e.msg = "New Message Received";
+      await io.sockets.emit(e.to, data);
       await saveChattingMsg(e);
     });
 
     socket.on("sendToUser", async (e) => {
-      await io.sockets.emit(e.to, { data: e });
+      let data = e;
+      e.msg = "New Message Received";
+      await io.sockets.emit(e.to, data);
       await saveChattingMsg(e);
     });
 
     socket.on("request", async (e) => {
-      await io.sockets.emit(e.to);
+      let data = e;
+      e.msg = "Received upload file from user";
+      await io.sockets.emit(e.to, data);
+    });
+
+    socket.on("replyAboutRequest", async (e) => {
+      let data = e;
+      e.msg = "Received result about your upload file";
+      await io.sockets.emit(e.to, data);
     });
   });
 };

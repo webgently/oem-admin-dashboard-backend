@@ -78,6 +78,6 @@ export const updateUserReadStatus = async (req, res, next) => {
   }
 };
 
-function sleep(ms) {
+const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
+};

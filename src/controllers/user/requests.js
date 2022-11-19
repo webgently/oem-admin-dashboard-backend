@@ -17,9 +17,21 @@ export const getRequests = async (req, res, next) => {
 
 export const getOneRequest = async (req, res, next) => {
   try {
-    const data = await Upload.find({ _id: req.body.id });
-    if (data) {
-      res.send({ status: true, data });
+    const result1 = await Upload.findOne({ _id: req.body.id });
+    const result2 = await Users.findOne({ _id: result1.userId });
+    const result3 = await CreditHistory.findOne({
+      userId: result1.userId,
+      orderId: result1.orderId,
+    });
+    let charged = 0;
+    if (result3) charged = result3.credit;
+    if (result1 && result2) {
+      res.send({
+        status: true,
+        data: result1,
+        available: result2.credit,
+        charged,
+      });
     } else {
       res.send({ status: false, data: "Interanal server error" });
     }
@@ -93,6 +105,23 @@ export const uploadUploadDataSave = async (req, res, next) => {
       result2 = d.save();
     }
     res.send({ status: true, data: "Uploaded successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const uploadStatusSave = async (req, res, next) => {
+  try {
+    const data = req.body.data;
+    await Upload.updateOne(
+      { _id: data.id },
+      {
+        status: data.status,
+        note: data.note,
+        readStatus: true,
+      }
+    );
+    res.send({ status: true, data: "Status updated successfully" });
   } catch (error) {
     console.log(error);
   }
