@@ -7,6 +7,7 @@ const Uploader1 = new FileUploader(path.join(fileconfig.logoBaseUrl));
 const Uploader2 = new FileUploader(path.join(fileconfig.fileServiceUrl));
 const router = routerx();
 
+/* User Manage */
 import {
   signup,
   signin,
@@ -17,40 +18,17 @@ import {
   addCredit,
   subtractCredit,
 } from "./controllers/sign";
+router.post("/signup", signup);
+router.post("/signin", signin);
+router.get("/getUserData", getUserData);
+router.post("/updateNote", updateNote);
+router.post("/updatestatus", updatestatus);
+router.post("/deleteUser", deleteUser);
+router.post("/addCredit", addCredit);
+router.post("/subtractCredit", subtractCredit);
+router.post("/subtractCredit", subtractCredit);
 
-import {
-  addService,
-  updateService,
-  getAllService,
-  getOneService,
-  deleteService,
-} from "./controllers/service";
-
-import {
-  getDashBoardData,
-  getServiceTime,
-  getSumCredit,
-} from "./controllers/dashboard";
-
-import {
-  addPrice,
-  updatePrice,
-  deletePrice,
-  getAllPrice,
-  getOnePrice,
-  getServiceType,
-} from "./controllers/price";
-
-import {
-  createCredit,
-  updateCredit,
-  deleteCredit,
-  getAllCredit,
-  getOneCredit,
-  updateFee,
-  getFee,
-} from "./controllers/credit";
-
+/* Admin Settings */
 import {
   updateProfile,
   savePrivacy,
@@ -63,74 +41,6 @@ import {
   uploadDataSave,
   getLogo,
 } from "./controllers/setting";
-
-import {
-  getSupportID,
-  getUserList,
-  getChattingHistory,
-  updateReadStatus,
-  getUserUnreadCount,
-  updateUserReadStatus,
-} from "./controllers/support";
-
-import {
-  buyCredit,
-  getAllInvoice,
-  getOneInvoice,
-  getUserInvoiceHistory,
-} from "./controllers/user/buyCredit";
-
-// user
-import { uploadFile, uploadFileDataSave } from "./controllers/user/upload";
-import { getDataByOrderID, getDataByFilter } from "./controllers/user/overview";
-import {
-  getRequests,
-  getOneRequest,
-  updateUpload,
-  uploadUploadDataSave,
-  changeStatus,
-  setRequestStatus,
-} from "./controllers/user/requests";
-import {
-  getCreditHistory,
-  getCreditByOrderID,
-} from "./controllers/user/creditHistory";
-
-router.post("/signup", signup);
-router.post("/signin", signin);
-router.get("/getUserData", getUserData);
-router.post("/updateNote", updateNote);
-router.post("/updatestatus", updatestatus);
-router.post("/deleteUser", deleteUser);
-router.post("/addCredit", addCredit);
-router.post("/subtractCredit", subtractCredit);
-router.post("/subtractCredit", subtractCredit);
-// service
-router.post("/addService", addService);
-router.post("/updateService", updateService);
-router.post("/getAllService", getAllService);
-router.post("/getOneService", getOneService);
-router.post("/deleteService", deleteService);
-// dashboard
-router.post("/getDashBoardData", getDashBoardData);
-router.post("/getServiceTime", getServiceTime);
-router.post("/getSumCredit", getSumCredit);
-// price lists
-router.post("/getServiceType", getServiceType);
-router.post("/addPrice", addPrice);
-router.post("/updatePrice", updatePrice);
-router.post("/deletePrice", deletePrice);
-router.post("/getAllPrice", getAllPrice);
-router.post("/getOnePrice", getOnePrice);
-// credit lists
-router.post("/createCredit", createCredit);
-router.post("/updateCredit", updateCredit);
-router.post("/deleteCredit", deleteCredit);
-router.post("/getAllCredit", getAllCredit);
-router.post("/getOneCredit", getOneCredit);
-router.post("/updateFee", updateFee);
-router.post("/getFee", getFee);
-// setting
 router.post("/updateProfile", updateProfile);
 router.post("/savePrivacy", savePrivacy);
 router.post("/getPrivacy", getPrivacy);
@@ -146,25 +56,92 @@ router.post(
   uploadDataSave
 );
 router.post("/getLogo", getLogo);
-// support
+
+/* Support */
+import {
+  getSupportID,
+  getUserList,
+  getChattingHistory,
+  updateReadStatus,
+  getUserUnreadCount,
+  updateUserReadStatus,
+} from "./controllers/support";
 router.post("/getSupportID", getSupportID);
 router.post("/getUserList", getUserList);
 router.post("/getChattingHistory", getChattingHistory);
 router.post("/updateReadStatus", updateReadStatus);
 router.post("/getUserUnreadCount", getUserUnreadCount);
 router.post("/updateUserReadStatus", updateUserReadStatus);
-router.post(
-  "/uploadFile",
-  multer({ storage: Uploader2.storage, fileFilter: Uploader2.filter }).any(),
-  uploadFile,
-  uploadFileDataSave
-);
-// files overview
-router.post("/getDataByOrderID", getDataByOrderID);
-router.post("/getDataByFilter", getDataByFilter);
+
+/* Credit List */
+import {
+  createCredit,
+  updateCredit,
+  deleteCredit,
+  getAllCredit,
+  getOneCredit,
+  updateFee,
+  getFee,
+} from "./controllers/credit";
+router.post("/createCredit", createCredit);
+router.post("/updateCredit", updateCredit);
+router.post("/deleteCredit", deleteCredit);
+router.post("/getAllCredit", getAllCredit);
+router.post("/getOneCredit", getOneCredit);
+router.post("/updateFee", updateFee);
+router.post("/getFee", getFee);
+
+/* Price List */
+import {
+  addPrice,
+  updatePrice,
+  deletePrice,
+  getAllPrice,
+  getOnePrice,
+  getServiceType,
+} from "./controllers/price";
+router.post("/getServiceType", getServiceType);
+router.post("/addPrice", addPrice);
+router.post("/updatePrice", updatePrice);
+router.post("/deletePrice", deletePrice);
+router.post("/getAllPrice", getAllPrice);
+router.post("/getOnePrice", getOnePrice);
+
+/* Services */
+import {
+  addService,
+  updateService,
+  getAllService,
+  getOneService,
+  deleteService,
+} from "./controllers/service";
+router.post("/addService", addService);
+router.post("/updateService", updateService);
+router.post("/getAllService", getAllService);
+router.post("/getOneService", getOneService);
+router.post("/deleteService", deleteService);
+
+/* Dashboard */
+import {
+  getDashBoardData,
+  getServiceTime,
+  getSumCredit,
+} from "./controllers/dashboard";
+router.post("/getDashBoardData", getDashBoardData);
+router.post("/getServiceTime", getServiceTime);
+router.post("/getSumCredit", getSumCredit);
+
+/* Admin Upload */
+import {
+  getRequests,
+  getOneRequest,
+  updateUpload,
+  uploadUploadDataSave,
+  changeStatus,
+  setRequestStatus,
+} from "./controllers/user/requests";
 router.post("/getRequests", getRequests);
 router.post("/getOneRequest", getOneRequest);
-
 router.post(
   "/updateUpload",
   multer({ storage: Uploader2.storage, fileFilter: Uploader2.filter }).any(),
@@ -173,11 +150,39 @@ router.post(
 );
 router.post("/changeStatus", changeStatus);
 router.post("/setRequestStatus", setRequestStatus);
-router.post("/getCreditHistory", getCreditHistory);
-router.post("/getCreditByOrderID", getCreditByOrderID);
+
+/* Buy Credits */
+import {
+  buyCredit,
+  getAllInvoice,
+  getOneInvoice,
+  getUserInvoiceHistory,
+} from "./controllers/user/buyCredit";
 router.post("/buyCredit", buyCredit);
 router.post("/getAllInvoice", getAllInvoice);
 router.post("/getOneInvoice", getOneInvoice);
 router.post("/getUserInvoiceHistory", getUserInvoiceHistory);
+
+/* User Upload Request */
+import { uploadFile, uploadFileDataSave } from "./controllers/user/upload";
+router.post(
+  "/uploadFile",
+  multer({ storage: Uploader2.storage, fileFilter: Uploader2.filter }).any(),
+  uploadFile,
+  uploadFileDataSave
+);
+
+/* Files Overview */
+import { getDataByOrderID, getDataByFilter } from "./controllers/user/overview";
+router.post("/getDataByOrderID", getDataByOrderID);
+router.post("/getDataByFilter", getDataByFilter);
+
+/* Credit History */
+import {
+  getCreditHistory,
+  getCreditByOrderID,
+} from "./controllers/user/creditHistory";
+router.post("/getCreditHistory", getCreditHistory);
+router.post("/getCreditByOrderID", getCreditByOrderID);
 
 export default router;
