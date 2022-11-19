@@ -4,12 +4,31 @@ import { Daily } from "../models/daily";
 import { Logo } from "../models/logo";
 
 export const updateProfile = async (req, res, next) => {
-  const { _id, contact, address, city } = req.body;
+  const {
+    _id,
+    name,
+    email,
+    contact,
+    vatNumber,
+    region,
+    country,
+    city,
+    address,
+  } = req.body;
   await Users.updateOne(
     {
       _id: _id,
     },
-    { phone: contact, address: address, city: city }
+    {
+      name: name,
+      email: email,
+      phone: contact,
+      vatNumber: vatNumber,
+      subcontinent: region,
+      country: country,
+      city: city,
+      address: address,
+    }
   );
   const result = await Users.findOne({ _id: req.body._id });
   res.send({ status: true, result });
