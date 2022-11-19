@@ -1,5 +1,4 @@
 import { Support } from "../models/support";
-import { Users } from "../models/sign";
 
 module.exports = (io) => {
   io.on("connection", async (socket) => {
@@ -8,29 +7,25 @@ module.exports = (io) => {
     });
 
     socket.on("sendToSupport", async (e) => {
-      let data = e;
-      e.msg = "New Message Received";
-      await io.sockets.emit(e.to, data);
+      const alertMsg = "New Message Received";
+      await io.sockets.emit(e.to, { data: e, alertMsg });
       await saveChattingMsg(e);
     });
 
     socket.on("sendToUser", async (e) => {
-      let data = e;
-      e.msg = "New Message Received";
-      await io.sockets.emit(e.to, data);
+      const alertMsg = "New Message Received";
+      await io.sockets.emit(e.to, { data: e, alertMsg });
       await saveChattingMsg(e);
     });
 
     socket.on("request", async (e) => {
-      let data = e;
-      e.msg = "Received upload file from user";
-      await io.sockets.emit(e.to, data);
+      const alertMsg = "Received upload file from user";
+      await io.sockets.emit("request" + e.to, { alertMsg });
     });
 
     socket.on("replyAboutRequest", async (e) => {
-      let data = e;
-      e.msg = "Received result about your upload file";
-      await io.sockets.emit(e.to, data);
+      const alertMsg = "Received result about your upload file";
+      await io.sockets.emit("answer" + e.to, { alertMsg });
     });
   });
 };
