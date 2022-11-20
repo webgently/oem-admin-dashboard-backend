@@ -129,6 +129,31 @@ export const getOneDaily = async (req, res, next) => {
   res.send({ status: true, data });
 };
 
+export const uploadAvatar = async (req, res, next) => {
+  let d = req.files;
+  let row = {};
+  for (let i in d) {
+    row[d[i].fieldname] = d[i].filename;
+  }
+  req.images = row;
+  next();
+};
+
+export const uploadAvatarDataSave = async (req, res, next) => {
+  const userId = JSON.parse(req.body.userId);
+  const result = await Users.updateOne(
+    {
+      _id: userId,
+    },
+    { profile: req.files[0].filename }
+  );
+  if (result) {
+    return res.send({ status: true, data: "logo/" + req.files[0].filename });
+  } else {
+    return res.send({ status: false, data: "Internal server error" });
+  }
+};
+
 export const uploadLogo = async (req, res, next) => {
   let d = req.files;
   let row = {};
@@ -159,6 +184,15 @@ export const getLogo = async (req, res, next) => {
   const result = await Logo.findOne({});
   if (result) {
     return res.send({ status: true, data: "logo/" + result.rename });
+  } else {
+    return res.send({ status: false, data: "Internal server error" });
+  }
+};
+
+export const getAvatar = async (req, res, next) => {
+  const result = await Users.findOne({ _id: req.body.userId });
+  if (result) {
+    return res.send({ status: true, data: "logo/" + result.profile });
   } else {
     return res.send({ status: false, data: "Internal server error" });
   }

@@ -39,7 +39,10 @@ import {
   getOneDaily,
   uploadLogo,
   uploadDataSave,
+  uploadAvatar,
+  uploadAvatarDataSave,
   getLogo,
+  getAvatar,
 } from "./controllers/setting";
 router.post("/updateProfile", updateProfile);
 router.post("/savePrivacy", savePrivacy);
@@ -50,12 +53,19 @@ router.post("/updateDaily", updateDaily);
 router.post("/getOneDaily", getOneDaily);
 router.post("/uploadLogo", uploadLogo);
 router.post(
+  "/uploadAvatar",
+  multer({ storage: Uploader1.storage, fileFilter: Uploader1.filter }).any(),
+  uploadAvatar,
+  uploadAvatarDataSave
+);
+router.post(
   "/uploadLogo",
   multer({ storage: Uploader1.storage, fileFilter: Uploader1.filter }).any(),
   uploadLogo,
   uploadDataSave
 );
 router.post("/getLogo", getLogo);
+router.post("/getAvatar", getAvatar);
 
 /* Support */
 import {
