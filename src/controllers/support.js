@@ -1,5 +1,6 @@
 import { Users } from "../models/sign";
 import { Support } from "../models/support";
+import { fileChattingList } from "../models/user/fileChattingList";
 
 export const getSupportID = async (req, res, next) => {
   try {
@@ -12,9 +13,16 @@ export const getSupportID = async (req, res, next) => {
 
 export const getUserList = async (req, res, next) => {
   try {
-    const userList = await Users.find({ _id: { $not: { $lte: req.body.id } } });
+    const list = await Users.find(
+      { _id: { $not: { $lte: req.body.id } } },
+      { _id: 1, name: 1, profile: 1 }
+    );
     const unreadCount = {};
-
+    const fileList = await fileChattingList.find(
+      {},
+      { _id: 1, name: 1, profile: 1 }
+    );
+    const userList = list.concat(fileList);
     await userList.forEach(async (element) => {
       const unreadmsg = await Support.find({
         $and: [{ from: element._id }, { status: false }],
@@ -30,9 +38,12 @@ export const getUserList = async (req, res, next) => {
 
 export const getChattingHistory = async (req, res, next) => {
   try {
-    const support = await Support.find({
-      $or: [{ from: req.body.id }, { to: req.body.id }],
-    });
+    const support = await Support.find(
+      {
+        $or: [{ from: req.body.id }, { to: req.body.id }],
+      },
+      { _id: 0, from: 1, to: 1, msg: 1, date: 1, status: 1 }
+    );
     res.send({ status: true, data: support });
   } catch (error) {
     console.log(error);
