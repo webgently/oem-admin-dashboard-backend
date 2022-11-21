@@ -24,7 +24,7 @@ module.exports = (io) => {
       await saveChattingMsg(e);
     });
     socket.on("sendToUserPerFile", async (e) => {
-      const alertMsg = `Received reply of admin about your uploaded ${e.orderId} file`;
+      const alertMsg = `Received message of admin about your upload ${e.orderId} file`;
       await io.sockets.emit(e.data.to, { data: e.data });
       await io.sockets.emit("fileReply" + e.data.to.substr(0, 24), {
         alertMsg,
@@ -35,6 +35,10 @@ module.exports = (io) => {
     socket.on("request", async (e) => {
       const alertMsg = `Received upload file from ${e.name}`;
       await io.sockets.emit("request" + e.to, { alertMsg });
+    });
+    socket.on("reply", async (e) => {
+      const alertMsg = `Received message of admin about your upload ${e.orderId} file`;
+      await io.sockets.emit("answer" + e.to, { alertMsg });
     });
     socket.on("addChattingListPerFile", async (e) => {
       const data = {

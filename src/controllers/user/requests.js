@@ -113,6 +113,17 @@ export const uploadUploadDataSave = async (req, res, next) => {
 export const uploadStatusSave = async (req, res, next) => {
   try {
     const data = req.body.data;
+    if (data.status === "cancelled") {
+      let user = await Users.findOne({ _id: data.userId });
+      await CreditHistory.updateOne(
+        { orderId: data.orderId, userId: data.userId },
+        {
+          credit: 0,
+        }
+      );
+      const updataCredit = user.credit + data.credit;
+      await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
+    }
     await Upload.updateOne(
       { _id: data.id },
       {
