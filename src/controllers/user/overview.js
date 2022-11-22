@@ -1,4 +1,5 @@
 import { Upload } from "../../models/user/uploadFile";
+import { Support } from "../../models/support";
 
 export const getDataByOrderID = async (req, res, next) => {
   try {
@@ -29,12 +30,27 @@ export const getDataByFilter = async (req, res, next) => {
         userId: req.body.id,
       });
     }
+    const unreadCount = {};
+    await data.forEach(async (element) => {
+      const unreadmsg = await Support.find({
+        $and: [
+          { to: req.body.id + element._id + element.orderId },
+          { status: false },
+        ],
+      });
+      unreadCount[element._id] = unreadmsg.length;
+    });
+    await sleep(100);
     if (data) {
-      res.send({ status: true, data });
+      res.send({ status: true, data, unreadCount });
     } else {
       res.send({ status: false, data: "Interanal server error" });
     }
   } catch (error) {
     console.log(error);
   }
+};
+
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };

@@ -23,6 +23,7 @@ export const getUserList = async (req, res, next) => {
       { _id: 1, name: 1, profile: 1 }
     );
     const userList = list.concat(fileList);
+
     await userList.forEach(async (element) => {
       const unreadmsg = await Support.find({
         $and: [{ from: element._id }, { status: false }],
@@ -58,6 +59,7 @@ export const updateReadStatus = async (req, res, next) => {
       },
       { status: true }
     );
+    req.app.get("io").emit("checkUnreadCount" + req.body.to);
     res.send({ status: true });
   } catch (error) {
     console.log(error);
@@ -70,6 +72,26 @@ export const getUserUnreadCount = async (req, res, next) => {
       $and: [{ to: req.body.id }, { status: false }],
     });
     res.send({ status: true, unreadCount: data.length });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getUserUnreadPerFileCount = async (req, res, next) => {
+  try {
+    const fileList = await fileChattingList.find(
+      { userId: req.body.id },
+      { _id: 1 }
+    );
+    let unreadCount = 0;
+    await fileList.forEach(async (element) => {
+      const unreadmsg = await Support.find({
+        $and: [{ to: element._id }, { status: false }],
+      });
+      unreadCount += unreadmsg.length;
+    });
+    await sleep(100);
+    res.send({ status: true, unreadCount });
   } catch (error) {
     console.log(error);
   }

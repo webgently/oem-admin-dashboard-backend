@@ -24,10 +24,13 @@ module.exports = (io) => {
       await saveChattingMsg(e);
     });
     socket.on("sendToUserPerFile", async (e) => {
-      const alertMsg = `Received message of admin about your upload ${e.orderId} file`;
+      const alertMsg = `Received message of admin about your upload file-${e.orderId}`;
       await io.sockets.emit(e.data.to, { data: e.data });
       await io.sockets.emit("fileReply" + e.data.to.substr(0, 24), {
         alertMsg,
+        from: e.data.to
+          .replace(e.data.to.substr(0, 24), "")
+          .replace(e.orderId, ""),
       });
       await saveChattingMsg(e.data);
     });
@@ -47,6 +50,10 @@ module.exports = (io) => {
         profile: e.profile,
       };
       await io.sockets.emit("file" + e.to, { data });
+      const result = await updateChattingStatusPerFile(e);
+      await io.sockets.emit("totalUnreadCount" + e.userId, {
+        count: result.nModified,
+      });
       await saveChattingListPerFile(e);
     });
   });
@@ -71,4 +78,8 @@ const saveChattingListPerFile = async (data) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const updateChattingStatusPerFile = async (data) => {
+  return await Support.updateMany({ to: data._id }, { status: true });
 };

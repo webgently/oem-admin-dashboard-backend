@@ -12,7 +12,9 @@ export const getDashBoardData = async (req, res, next) => {
     const service = await Service.find({});
     const upload = await Upload.find({});
     const upload1 = await Upload.findOne({ readStatus: false });
-    const support = await Support.find({ status: false });
+    const support = await Support.find({
+      $and: [{ from: { $not: { $lte: req.body.id } } }, { status: false }],
+    });
     dashboard.userCount = user.length;
     dashboard.serviceCount = service.length;
     dashboard.requestCount = upload.length;

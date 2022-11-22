@@ -74,6 +74,7 @@ import {
   getChattingHistory,
   updateReadStatus,
   getUserUnreadCount,
+  getUserUnreadPerFileCount,
   updateUserReadStatus,
 } from "./controllers/support";
 router.post("/getSupportID", getSupportID);
@@ -81,6 +82,7 @@ router.post("/getUserList", getUserList);
 router.post("/getChattingHistory", getChattingHistory);
 router.post("/updateReadStatus", updateReadStatus);
 router.post("/getUserUnreadCount", getUserUnreadCount);
+router.post("/getUserUnreadPerFileCount", getUserUnreadPerFileCount);
 router.post("/updateUserReadStatus", updateUserReadStatus);
 
 /* Credit List */
