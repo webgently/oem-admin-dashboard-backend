@@ -1,6 +1,8 @@
 import { Upload } from "../../models/user/uploadFile";
 import { CreditHistory } from "../../models/user/creditHistory";
 import { Users } from "../../models/sign";
+const sgMail = require("@sendgrid/mail");
+require("dotenv").config();
 
 export const getRequests = async (req, res, next) => {
   try {
@@ -71,21 +73,18 @@ export const uploadUploadDataSave = async (req, res, next) => {
         readStatus: true,
       }
     );
-
     const credit = {
       userId: data.userId,
       orderId: data.orderId,
       credit: data.credit,
       date: data.date,
     };
-
     const exist = await CreditHistory.findOne({
       orderId: data.orderId,
       userId: data.userId,
     });
-
-    let result2;
     let user = await Users.findOne({ _id: data.userId });
+    let result2;
     if (exist) {
       const updataCredit = user.credit + exist.credit - data.credit;
       await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
@@ -104,6 +103,45 @@ export const uploadUploadDataSave = async (req, res, next) => {
       const d = new CreditHistory(credit);
       result2 = d.save();
     }
+    const userMail = `
+      <div style="display: flex; justify-content: center">
+        <div style="padding: 10vh 14vw;">
+          <div style="display: flex; justify-content: center">
+            <img src="https://ipfs.io/ipfs/QmeJPsPL6z3583s6piViWoAPAkYWSY6hZeoocq6y7zSnZh" width="75%" />
+          </div>
+          <div style="border-bottom: 2px solid black;"></div>
+          <div style="display: flex; justify-content: start; padding-top: 2vh;">
+            <div>
+              <h1>Your file is ready!</h1>
+              <div style="font-size: 16px;">
+                <p>Dear ${user.name}, your uploaded file(id: ${data.orderId}) has been completed and is ready for installation.</p>
+                <p>Please be careful when writing files to ECUs! 
+                  As a profestional tuner, we expect you to have confidence, knowledge and experience in doing this kind of work.
+                </p>
+                <p>Thank you for your trust in our services and we hope to see you again soon!</p>
+              </div>
+            </div>
+          </div>
+          <div style="padding-top: 4vh;"><button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;"><a href="${process.env.SITE_DOMAIN}/overview" style=" color: white;">GO TO CUSTOMER PORTAL</a></button></div>
+        </div>
+      </div>`;
+    const userMsg = {
+      to: user.email,
+      from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
+      subject: "File Ready!",
+      text: `File(${data.orderId}) Uploading!`,
+      html: userMail,
+    };
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    sgMail.send(userMsg).then(
+      () => {},
+      (error) => {
+        console.error(error);
+        if (error.response) {
+          console.error(error.response.body);
+        }
+      }
+    );
     res.send({ status: true, data: "Uploaded successfully" });
   } catch (error) {
     console.log(error);
@@ -123,6 +161,41 @@ export const uploadStatusSave = async (req, res, next) => {
       );
       const updataCredit = user.credit + data.credit;
       await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
+      const userMail = `
+        <div style="display: flex; justify-content: center">
+          <div style="padding: 10vh 14vw;">
+            <div style="display: flex; justify-content: center">
+              <img src="https://ipfs.io/ipfs/QmeJPsPL6z3583s6piViWoAPAkYWSY6hZeoocq6y7zSnZh" width="75%" />
+            </div>
+            <div style="border-bottom: 2px solid black;"></div>
+            <div style="display: flex; justify-content: start; padding-top: 2vh;">
+              <div>
+                <h1>Your file is cancel!</h1>
+                <div style="font-size: 16px;">
+                  <p>Dear ${user.name}, your uploaded file(id: ${data.orderId}) has been cancelled and is ready for installation.</p>
+                </div>
+              </div>
+            </div>
+            <div style="padding-top: 4vh;"><button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;"><a href="${process.env.SITE_DOMAIN}/overview" style=" color: white;">GO TO CUSTOMER PORTAL</a></button></div>
+          </div>
+        </div>`;
+      const userMsg = {
+        to: data.email,
+        from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
+        subject: "File Cancelled!",
+        text: `File(${data.orderId}) Cancelled!`,
+        html: userMail,
+      };
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      sgMail.send(userMsg).then(
+        () => {},
+        (error) => {
+          console.error(error);
+          if (error.response) {
+            console.error(error.response.body);
+          }
+        }
+      );
     }
     await Upload.updateOne(
       { _id: data.id },

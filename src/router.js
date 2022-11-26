@@ -17,6 +17,7 @@ import {
   deleteUser,
   addCredit,
   subtractCredit,
+  forgotPassword,
 } from "./controllers/sign";
 router.post("/signup", signup);
 router.post("/signin", signin);
@@ -26,7 +27,7 @@ router.post("/updatestatus", updatestatus);
 router.post("/deleteUser", deleteUser);
 router.post("/addCredit", addCredit);
 router.post("/subtractCredit", subtractCredit);
-router.post("/subtractCredit", subtractCredit);
+router.post("/forgotPassword", forgotPassword);
 
 /* Admin Settings */
 import {

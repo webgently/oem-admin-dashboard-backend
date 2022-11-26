@@ -126,16 +126,111 @@ export const buyCredit = async (req, res, next) => {
           <center>You're receiving this email because you made a purchase at ZipTuning</center>
         </div>
       </div>`;
+    const adminMail = `
+      <div style="display: flex; justify-content: center">
+        <div style="padding: 10vh 14vw;">
+            <h2 style="text-align: center">Receipt from Zip Tuning Team</h2>
+            <p style="text-align: center">Receipt #: ${other.receipt}</p>
+            <div style="display: flex; padding-top: 2vh">
+                <div style="flex-direction: column; padding: 0 4vw;">
+                    <p style="font-weight: bold">AMOUNT PAID</p>
+                    <p>€${other.netAmount}</p>
+                </div>
+                <div style="flex-direction: column; padding: 0 4vw">
+                    <p style="font-weight: bold">DATE PAID</p>
+                    <p>${other.date}</p>
+                </div>
+                <div style="flex-direction: column; padding: 0 4vw">
+                    <p style="font-weight: bold">PAYMENT METHOD</p>
+                    <p>${other.method}</p>
+                </div>
+            </div>
+            <h4 style="padding: 0 4vw">Customer Details</h4>
+            <div style="display: flex; padding: 0 4vw">
+                <ul style="list-style-type: none; font-weight: bold; padding-left: 2vw">
+                    <li>Name:</li>
+                    <li>Email:</li>
+                    <li>Contact:</li>
+                    <li>VAT Number:</li>
+                    <li>Account Status:</li>
+                    <li>Region:</li>
+                    <li>Country:</li>
+                    <li>City:</li>
+                    <li>Address:</li>
+                    <li>Zip Code:</li>
+                </ul>
+                <ul style="list-style-type: none;">
+                    <li>${account.name}</li>
+                    <li>${token.email}</li>
+                    <li>${account.phone}</li>
+                    <li>${account.vatNumber}</li>
+                    <li>${account.status}</li>
+                    <li>${account.subcontinent}</li>
+                    <li>${account.country}</li>
+                    <li>${account.city}</li>
+                    <li>${account.address}</li>
+                    <li>${account.zcode}</li>
+                </ul>
+            </div>
+            <h4 style="padding: 0 4vw">SUMMARY</h4>
+            <div style="padding: 0 10vw">
+              <p>
+                <span>Bought 100 Credits</span>
+                <span style="float: right">€${Number(
+                  other.netAmount - other.fee
+                )}</span>
+              </p>
+              <div style="border: 1px solid #80808075"></div>
+              <p>
+                <span>Handling Fee</span>
+                <span style="float: right">€${other.fee}</span>
+              </p>
+              <div style="border: 1px solid #80808075"></div>
+              <p>
+                <span>25% VAT Charges</span>
+                <span style="float: right">${other.vatCharge}</span>
+              </p>
+              <div style="border: 1px solid #80808075"></div>
+              <p style="font-weight: bold;">
+                <span>Amount charged</span>
+                <span style="float: right">€${other.netAmount}</span>
+              </p>
+            </div>
+            <div style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding: 2vh 0; margin: 4vh 4vw">
+            <div style="text-align: center">
+              If you have any questions, contact us at&nbsp;<b>jonas@ecmtweaks.se</b>.
+            </div>
+          </div>
+          <center>You're receiving this email because you made a purchase at ZipTuning</center>
+        </div>
+      </div>`;
     if (result1 && result2) {
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-      const msg = {
+      const adminMsg = {
         to: process.env.SUPPORT_EMAIL,
         from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
-        subject: "Payment Receipt",
-        text: `From: ${token.email}`,
+        subject: `Received Payment`,
+        text: `Received €${other.netAmount} of payment receipt(${other.receipt}) from ${account.name}`,
+        html: adminMail,
+      };
+      console.log(process.env.SENDGRID_API_KEY);
+      const userMsg = {
+        to: other.email,
+        from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
+        subject: `Payment Receipt`,
+        text: `Payment Receipt(${other.receipt})`,
         html: userMail,
       };
-      sgMail.send(msg).then(
+      sgMail.send(adminMsg).then(
+        () => {},
+        (error) => {
+          console.error(error);
+
+          if (error.response) {
+            console.error(error.response.body);
+          }
+        }
+      );
+      sgMail.send(userMsg).then(
         () => {},
         (error) => {
           console.error(error);

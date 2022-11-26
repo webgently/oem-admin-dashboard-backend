@@ -36,6 +36,19 @@ export const signin = async (req, res, next) => {
   }
 };
 
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const result = await Users.findOne({ email: req.body.email });
+    if (result) {
+      // res.send({ stauts: true, data: result });
+    } else {
+      res.send({ stauts: false, data: "Invalid Email" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getUserData = async (req, res, next) => {
   const result = await Users.find({});
   res.send(result);
