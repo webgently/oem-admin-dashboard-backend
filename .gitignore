@@ -1,6 +1,5 @@
 node_modules/
-env
-Adworks.app-frontend/
+.env
 yarn.lock
 package-lock.json
 yarn-error.log

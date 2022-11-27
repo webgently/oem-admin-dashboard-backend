@@ -18,6 +18,8 @@ import {
   addCredit,
   subtractCredit,
   forgotPassword,
+  resetPassword,
+  checkResetLink,
 } from "./controllers/sign";
 router.post("/signup", signup);
 router.post("/signin", signin);
@@ -28,6 +30,8 @@ router.post("/deleteUser", deleteUser);
 router.post("/addCredit", addCredit);
 router.post("/subtractCredit", subtractCredit);
 router.post("/forgotPassword", forgotPassword);
+router.post("/resetPassword", resetPassword);
+router.post("/checkResetLink", checkResetLink);
 
 /* Admin Settings */
 import {
