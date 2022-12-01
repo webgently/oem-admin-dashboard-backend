@@ -212,7 +212,6 @@ export const buyCredit = async (req, res, next) => {
         text: `Received €${other.netAmount} of payment receipt(${other.receipt}) from ${account.name}`,
         html: adminMail,
       };
-      console.log(process.env.SENDGRID_API_KEY);
       const userMsg = {
         to: other.email,
         from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
@@ -240,6 +239,7 @@ export const buyCredit = async (req, res, next) => {
           }
         }
       );
+      req.app.get("io").emit("creditCheck" + other.userId);
       res.send({ stauts: true });
     } else {
       res.send({ stauts: false, data: "Interanal server error" });
