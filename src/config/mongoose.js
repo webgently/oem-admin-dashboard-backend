@@ -31,7 +31,7 @@ const makeAdmin = async () => {
       vatNumber: "",
       checkflag: "",
       password: "1234568",
-      permission: "",
+      permission: "admin",
       note: "",
       date: "",
       credit: 0,
