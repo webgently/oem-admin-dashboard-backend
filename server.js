@@ -1,12 +1,11 @@
-import cors from "cors";
-import express from "express";
-import bodyParser from "body-parser";
-import useragent from "express-useragent";
-import path from "path";
-import dir from "./src/dir.js";
-import mongoose from "./src/config/mongoose";
-import router from "./src/router";
-
+const cors = require("cors");
+const express = require("express");
+const bodyParser = require("body-parser");
+const useragent = require("express-useragent");
+const path = require("path");
+const dir = require("./src/dir.js");
+const mongoose = require("./src/config/mongoose");
+const router = require("./src/router");
 mongoose();
 
 const port = 2083;
