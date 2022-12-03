@@ -8,7 +8,7 @@ const Uploader2 = new FileUploader(path.join(fileconfig.fileServiceUrl));
 const router = express.Router();
 
 /* User Manage */
-import {
+const {
   signup,
   signin,
   getUserData,
@@ -20,7 +20,7 @@ import {
   forgotPassword,
   resetPassword,
   checkResetLink,
-} from "./controllers/sign";
+} = require("./controllers/sign");
 router.post("/signup", signup);
 router.post("/signin", signin);
 router.get("/getUserData", getUserData);
@@ -34,7 +34,7 @@ router.post("/resetPassword", resetPassword);
 router.post("/checkResetLink", checkResetLink);
 
 /* Admin Settings */
-import {
+const {
   updateProfile,
   savePrivacy,
   getPrivacy,
@@ -48,7 +48,7 @@ import {
   uploadAvatarDataSave,
   getLogo,
   getAvatar,
-} from "./controllers/setting";
+} = require("./controllers/setting");
 router.post("/updateProfile", updateProfile);
 router.post("/savePrivacy", savePrivacy);
 router.post("/getPrivacy", getPrivacy);
@@ -73,7 +73,7 @@ router.post("/getLogo", getLogo);
 router.post("/getAvatar", getAvatar);
 
 /* Support */
-import {
+const {
   getSupportID,
   getUserList,
   getChattingHistory,
@@ -81,7 +81,7 @@ import {
   getUserUnreadCount,
   getUserUnreadPerFileCount,
   updateUserReadStatus,
-} from "./controllers/support";
+} = require("./controllers/support");
 router.post("/getSupportID", getSupportID);
 router.post("/getUserList", getUserList);
 router.post("/getChattingHistory", getChattingHistory);
@@ -91,7 +91,7 @@ router.post("/getUserUnreadPerFileCount", getUserUnreadPerFileCount);
 router.post("/updateUserReadStatus", updateUserReadStatus);
 
 /* Credit List */
-import {
+const {
   createCredit,
   updateCredit,
   deleteCredit,
@@ -99,7 +99,7 @@ import {
   getOneCredit,
   updateFee,
   getFee,
-} from "./controllers/credit";
+} = require("./controllers/credit");
 router.post("/createCredit", createCredit);
 router.post("/updateCredit", updateCredit);
 router.post("/deleteCredit", deleteCredit);
@@ -109,14 +109,14 @@ router.post("/updateFee", updateFee);
 router.post("/getFee", getFee);
 
 /* Price List */
-import {
+const {
   addPrice,
   updatePrice,
   deletePrice,
   getAllPrice,
   getOnePrice,
   getServiceType,
-} from "./controllers/price";
+} = require("./controllers/price");
 router.post("/getServiceType", getServiceType);
 router.post("/addPrice", addPrice);
 router.post("/updatePrice", updatePrice);
@@ -125,13 +125,13 @@ router.post("/getAllPrice", getAllPrice);
 router.post("/getOnePrice", getOnePrice);
 
 /* Services */
-import {
+const {
   addService,
   updateService,
   getAllService,
   getOneService,
   deleteService,
-} from "./controllers/service";
+} = require("./controllers/service");
 router.post("/addService", addService);
 router.post("/updateService", updateService);
 router.post("/getAllService", getAllService);
@@ -139,17 +139,17 @@ router.post("/getOneService", getOneService);
 router.post("/deleteService", deleteService);
 
 /* Dashboard */
-import {
+const {
   getDashBoardData,
   getServiceTime,
   getSumCredit,
-} from "./controllers/dashboard";
+} = require("./controllers/dashboard");
 router.post("/getDashBoardData", getDashBoardData);
 router.post("/getServiceTime", getServiceTime);
 router.post("/getSumCredit", getSumCredit);
 
 /* Admin Upload */
-import {
+const {
   getRequests,
   getOneRequest,
   updateUpload,
@@ -157,7 +157,7 @@ import {
   changeStatus,
   setRequestStatus,
   uploadStatusSave,
-} from "./controllers/user/requests";
+} = require("./controllers/user/requests");
 router.post("/getRequests", getRequests);
 router.post("/getOneRequest", getOneRequest);
 router.post(
@@ -171,19 +171,19 @@ router.post("/setRequestStatus", setRequestStatus);
 router.post("/uploadStatusSave", uploadStatusSave);
 
 /* Buy Credits */
-import {
+const {
   buyCredit,
   getAllInvoice,
   getOneInvoice,
   getUserInvoiceHistory,
-} from "./controllers/user/buyCredit";
+} = require("./controllers/user/buyCredit");
 router.post("/buyCredit", buyCredit);
 router.post("/getAllInvoice", getAllInvoice);
 router.post("/getOneInvoice", getOneInvoice);
 router.post("/getUserInvoiceHistory", getUserInvoiceHistory);
 
 /* User Upload Request */
-import { uploadFile, uploadFileDataSave } from "./controllers/user/upload";
+const { uploadFile, uploadFileDataSave } = require("./controllers/user/upload");
 router.post(
   "/uploadFile",
   multer({ storage: Uploader2.storage, fileFilter: Uploader2.filter }).any(),
@@ -192,17 +192,19 @@ router.post(
 );
 
 /* Files Overview */
-import { getDataByOrderID, getDataByFilter } from "./controllers/user/overview";
+const {
+  getDataByOrderID,
+  getDataByFilter,
+} = require("./controllers/user/overview");
 router.post("/getDataByOrderID", getDataByOrderID);
 router.post("/getDataByFilter", getDataByFilter);
 
 /* Credit History */
-import {
+const {
   getCreditHistory,
   getCreditByOrderID,
-} from "./controllers/user/creditHistory";
+} = require("./controllers/user/creditHistory");
 router.post("/getCreditHistory", getCreditHistory);
 router.post("/getCreditByOrderID", getCreditByOrderID);
 
 module.exports = router;
-c;
