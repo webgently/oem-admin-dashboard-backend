@@ -3,7 +3,7 @@ const { Upload } = require("../../models/user/uploadFile");
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 
-export const uploadFileDataSave = async (req, res, next) => {
+const uploadFileDataSave = async (req, res, next) => {
   try {
     const data = JSON.parse(req.body.data);
     data.fileRename = req.files[0].filename;
@@ -91,7 +91,7 @@ export const uploadFileDataSave = async (req, res, next) => {
   }
 };
 
-export const uploadFile = async (req, res, next) => {
+const uploadFile = async (req, res, next) => {
   let d = req.files;
   let row = {};
   for (let i in d) {
@@ -99,4 +99,9 @@ export const uploadFile = async (req, res, next) => {
   }
   req.images = row;
   next();
+};
+
+module.exports = {
+  uploadFileDataSave,
+  uploadFile,
 };

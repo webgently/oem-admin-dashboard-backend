@@ -1,6 +1,6 @@
 const { Service } = require("../models/service");
 
-export const addService = async (req, res, next) => {
+const addService = async (req, res, next) => {
   let serviceData = req.body.data;
   serviceData.status = "Active";
   const newService = new Service(serviceData);
@@ -12,7 +12,7 @@ export const addService = async (req, res, next) => {
   }
 };
 
-export const updateService = async (req, res, next) => {
+const updateService = async (req, res, next) => {
   const { _id, serviceType } = req.body.data;
   await Service.updateOne(
     {
@@ -23,19 +23,27 @@ export const updateService = async (req, res, next) => {
   res.send("success");
 };
 
-export const getAllService = async (req, res, next) => {
+const getAllService = async (req, res, next) => {
   const result = await Service.find({});
   res.send(result);
 };
 
-export const getOneService = async (req, res, next) => {
+const getOneService = async (req, res, next) => {
   const service = await Service.findOne({ _id: req.body._id });
   if (service) {
     res.send(service);
   }
 };
 
-export const deleteService = async (req, res, next) => {
+const deleteService = async (req, res, next) => {
   await Service.remove({ _id: req.body._id });
   res.send("success");
+};
+
+module.exports = {
+  addService,
+  updateService,
+  getAllService,
+  getOneService,
+  deleteService,
 };

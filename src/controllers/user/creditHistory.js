@@ -1,6 +1,6 @@
 const { CreditHistory } = require("../../models/user/creditHistory");
 
-export const getCreditHistory = async (req, res, next) => {
+const getCreditHistory = async (req, res, next) => {
   try {
     const result = await CreditHistory.find({ userId: req.body.id });
     if (result) {
@@ -13,7 +13,7 @@ export const getCreditHistory = async (req, res, next) => {
   }
 };
 
-export const getCreditByOrderID = async (req, res, next) => {
+const getCreditByOrderID = async (req, res, next) => {
   try {
     const data = await CreditHistory.find({
       orderId: req.body.order,
@@ -28,3 +28,5 @@ export const getCreditByOrderID = async (req, res, next) => {
     console.log(error);
   }
 };
+
+module.exports = { getCreditHistory, getCreditByOrderID };

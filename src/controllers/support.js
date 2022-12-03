@@ -2,7 +2,7 @@ const { Users } = require("../models/sign");
 const { Support } = require("../models/support");
 const { fileChattingList } = require("../models/user/fileChattingList");
 
-export const getSupportID = async (req, res, next) => {
+const getSupportID = async (req, res, next) => {
   try {
     const admin = await Users.findOne({ permission: "admin" });
     res.send({ status: true, data: admin._id });
@@ -11,7 +11,7 @@ export const getSupportID = async (req, res, next) => {
   }
 };
 
-export const getUserList = async (req, res, next) => {
+const getUserList = async (req, res, next) => {
   try {
     const list = await Users.find(
       { _id: { $not: { $lte: req.body.id } } },
@@ -37,7 +37,7 @@ export const getUserList = async (req, res, next) => {
   }
 };
 
-export const getChattingHistory = async (req, res, next) => {
+const getChattingHistory = async (req, res, next) => {
   try {
     const support = await Support.find(
       {
@@ -51,7 +51,7 @@ export const getChattingHistory = async (req, res, next) => {
   }
 };
 
-export const updateReadStatus = async (req, res, next) => {
+const updateReadStatus = async (req, res, next) => {
   try {
     await Support.updateMany(
       {
@@ -66,7 +66,7 @@ export const updateReadStatus = async (req, res, next) => {
   }
 };
 
-export const getUserUnreadCount = async (req, res, next) => {
+const getUserUnreadCount = async (req, res, next) => {
   try {
     const data = await Support.find({
       $and: [{ to: req.body.id }, { status: false }],
@@ -77,7 +77,7 @@ export const getUserUnreadCount = async (req, res, next) => {
   }
 };
 
-export const getUserUnreadPerFileCount = async (req, res, next) => {
+const getUserUnreadPerFileCount = async (req, res, next) => {
   try {
     const fileList = await fileChattingList.find(
       { userId: req.body.id },
@@ -97,7 +97,7 @@ export const getUserUnreadPerFileCount = async (req, res, next) => {
   }
 };
 
-export const updateUserReadStatus = async (req, res, next) => {
+const updateUserReadStatus = async (req, res, next) => {
   try {
     await Support.updateMany(
       {
@@ -113,4 +113,14 @@ export const updateUserReadStatus = async (req, res, next) => {
 
 const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+module.exports = {
+  getSupportID,
+  getUserList,
+  getChattingHistory,
+  updateReadStatus,
+  getUserUnreadCount,
+  getUserUnreadPerFileCount,
+  updateUserReadStatus,
 };

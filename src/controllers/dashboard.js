@@ -4,7 +4,7 @@ const { Support } = require("../models/support");
 const { Upload } = require("../models/user/uploadFile");
 const { Daily } = require("../models/daily");
 
-export const getDashBoardData = async (req, res, next) => {
+const getDashBoardData = async (req, res, next) => {
   try {
     let dashboard = {};
     const user = await Users.find({});
@@ -26,7 +26,7 @@ export const getDashBoardData = async (req, res, next) => {
   }
 };
 
-export const getServiceTime = async (req, res, next) => {
+const getServiceTime = async (req, res, next) => {
   try {
     const result = await Daily.findOne({ day: req.body.day });
     res.send({ status: true, data: result });
@@ -35,11 +35,17 @@ export const getServiceTime = async (req, res, next) => {
   }
 };
 
-export const getSumCredit = async (req, res, next) => {
+const getSumCredit = async (req, res, next) => {
   try {
     const result = await Users.findOne({ _id: req.body.id });
     res.send({ status: true, data: result.credit });
   } catch (error) {
     console.log(error);
   }
+};
+
+module.exports = {
+  getDashBoardData,
+  getServiceTime,
+  getSumCredit,
 };

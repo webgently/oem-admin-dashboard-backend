@@ -1,7 +1,7 @@
 const { Upload } = require("../../models/user/uploadFile");
 const { Support } = require("../../models/support");
 
-export const getDataByOrderID = async (req, res, next) => {
+const getDataByOrderID = async (req, res, next) => {
   try {
     const data = await Upload.find({
       orderId: req.body.order,
@@ -17,7 +17,7 @@ export const getDataByOrderID = async (req, res, next) => {
   }
 };
 
-export const getDataByFilter = async (req, res, next) => {
+const getDataByFilter = async (req, res, next) => {
   try {
     let data;
     if (req.body.filter === "all") {
@@ -53,4 +53,9 @@ export const getDataByFilter = async (req, res, next) => {
 
 const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+module.exports = {
+  getDataByOrderID,
+  getDataByFilter,
 };

@@ -3,7 +3,7 @@ const { Privacy } = require("../models/privacy");
 const { Daily } = require("../models/daily");
 const { Logo } = require("../models/logo");
 
-export const updateProfile = async (req, res, next) => {
+const updateProfile = async (req, res, next) => {
   const {
     _id,
     name,
@@ -34,7 +34,7 @@ export const updateProfile = async (req, res, next) => {
   res.send({ status: true, result });
 };
 
-export const savePrivacy = async (req, res, next) => {
+const savePrivacy = async (req, res, next) => {
   const { id, privacyMsg } = req.body;
   await Privacy.updateOne(
     {
@@ -45,7 +45,7 @@ export const savePrivacy = async (req, res, next) => {
   res.send({ status: true });
 };
 
-export const getPrivacy = async (req, res, next) => {
+const getPrivacy = async (req, res, next) => {
   const data = await Privacy.findOne({});
   if (data) {
     res.send({ status: false, _id: data._id, privacy: data.privacy });
@@ -56,7 +56,7 @@ export const getPrivacy = async (req, res, next) => {
   }
 };
 
-export const changePassword = async (req, res, next) => {
+const changePassword = async (req, res, next) => {
   const { _id, oldPassword, newPassword } = req.body;
   const data = await Users.findOne({ _id: req.body._id });
   if (data.password === oldPassword) {
@@ -73,7 +73,7 @@ export const changePassword = async (req, res, next) => {
   }
 };
 
-export const getAllDaily = async (req, res, next) => {
+const getAllDaily = async (req, res, next) => {
   try {
     const data = await Daily.find({});
     if (data.length > 0) {
@@ -102,7 +102,7 @@ export const getAllDaily = async (req, res, next) => {
   }
 };
 
-export const updateDaily = async (req, res, next) => {
+const updateDaily = async (req, res, next) => {
   const { id, holyDay, openTime, closeTime } = req.body.data;
   if (holyDay) {
     await Daily.updateOne(
@@ -124,12 +124,12 @@ export const updateDaily = async (req, res, next) => {
   res.send({ status: true, result });
 };
 
-export const getOneDaily = async (req, res, next) => {
+const getOneDaily = async (req, res, next) => {
   const data = await Daily.findOne({ _id: req.body.id });
   res.send({ status: true, data });
 };
 
-export const uploadAvatar = async (req, res, next) => {
+const uploadAvatar = async (req, res, next) => {
   let d = req.files;
   let row = {};
   for (let i in d) {
@@ -139,7 +139,7 @@ export const uploadAvatar = async (req, res, next) => {
   next();
 };
 
-export const uploadAvatarDataSave = async (req, res, next) => {
+const uploadAvatarDataSave = async (req, res, next) => {
   const userId = JSON.parse(req.body.userId);
   const result = await Users.updateOne(
     {
@@ -154,7 +154,7 @@ export const uploadAvatarDataSave = async (req, res, next) => {
   }
 };
 
-export const uploadLogo = async (req, res, next) => {
+const uploadLogo = async (req, res, next) => {
   let d = req.files;
   let row = {};
   for (let i in d) {
@@ -164,7 +164,7 @@ export const uploadLogo = async (req, res, next) => {
   next();
 };
 
-export const uploadDataSave = async (req, res, next) => {
+const uploadDataSave = async (req, res, next) => {
   const check = await Privacy.findOne({});
   const data = JSON.parse(req.body.data);
   data.rename = req.files[0].filename;
@@ -180,7 +180,7 @@ export const uploadDataSave = async (req, res, next) => {
   }
 };
 
-export const getLogo = async (req, res, next) => {
+const getLogo = async (req, res, next) => {
   const result = await Logo.findOne({});
   if (result) {
     return res.send({ status: true, data: "logo/" + result.rename });
@@ -189,11 +189,27 @@ export const getLogo = async (req, res, next) => {
   }
 };
 
-export const getAvatar = async (req, res, next) => {
+const getAvatar = async (req, res, next) => {
   const result = await Users.findOne({ _id: req.body.userId });
   if (result) {
     return res.send({ status: true, data: "logo/" + result.profile });
   } else {
     return res.send({ status: false, data: "Internal server error" });
   }
+};
+
+module.exports = {
+  updateProfile,
+  savePrivacy,
+  getPrivacy,
+  changePassword,
+  getAllDaily,
+  updateDaily,
+  getOneDaily,
+  uploadAvatar,
+  uploadAvatarDataSave,
+  uploadLogo,
+  uploadDataSave,
+  getLogo,
+  getAvatar,
 };

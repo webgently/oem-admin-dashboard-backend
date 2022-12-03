@@ -6,7 +6,7 @@ const stripe = require("stripe")(process.env.STRIPE_PUBLIC_KEY);
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 
-export const buyCredit = async (req, res, next) => {
+const buyCredit = async (req, res, next) => {
   try {
     const { token, other, account } = req.body.data;
     // const customer = await stripe.customers.create({
@@ -250,7 +250,7 @@ export const buyCredit = async (req, res, next) => {
   }
 };
 
-export const getAllInvoice = async (req, res, next) => {
+const getAllInvoice = async (req, res, next) => {
   try {
     const result = await Invoice.find({});
     if (result) {
@@ -263,7 +263,7 @@ export const getAllInvoice = async (req, res, next) => {
   }
 };
 
-export const getOneInvoice = async (req, res, next) => {
+const getOneInvoice = async (req, res, next) => {
   try {
     const result1 = await Invoice.findOne({ _id: req.body.id });
     const result2 = await Users.findOne({ _id: req.body.userId });
@@ -277,7 +277,7 @@ export const getOneInvoice = async (req, res, next) => {
   }
 };
 
-export const getUserInvoiceHistory = async (req, res, next) => {
+const getUserInvoiceHistory = async (req, res, next) => {
   try {
     const result = await Invoice.find({ userId: req.body.id });
     if (result) {
@@ -288,4 +288,11 @@ export const getUserInvoiceHistory = async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+module.exports = {
+  buyCredit,
+  getAllInvoice,
+  getOneInvoice,
+  getUserInvoiceHistory,
 };

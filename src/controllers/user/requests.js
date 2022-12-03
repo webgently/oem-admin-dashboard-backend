@@ -4,7 +4,7 @@ const { Users } = require("../../models/sign");
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 
-export const getRequests = async (req, res, next) => {
+const getRequests = async (req, res, next) => {
   try {
     const data = await Upload.find({});
     if (data) {
@@ -17,7 +17,7 @@ export const getRequests = async (req, res, next) => {
   }
 };
 
-export const getOneRequest = async (req, res, next) => {
+const getOneRequest = async (req, res, next) => {
   try {
     const result1 = await Upload.findOne({ _id: req.body.id });
     const result2 = await Users.findOne({ _id: result1.userId });
@@ -42,7 +42,7 @@ export const getOneRequest = async (req, res, next) => {
   }
 };
 
-export const updateUpload = async (req, res, next) => {
+const updateUpload = async (req, res, next) => {
   try {
     let d = req.files;
     let row = {};
@@ -56,7 +56,7 @@ export const updateUpload = async (req, res, next) => {
   }
 };
 
-export const uploadUploadDataSave = async (req, res, next) => {
+const uploadUploadDataSave = async (req, res, next) => {
   try {
     const data = JSON.parse(req.body.data);
     const result1 = await Upload.updateOne(
@@ -148,7 +148,7 @@ export const uploadUploadDataSave = async (req, res, next) => {
   }
 };
 
-export const uploadStatusSave = async (req, res, next) => {
+const uploadStatusSave = async (req, res, next) => {
   try {
     const data = req.body.data;
     if (data.status === "cancelled") {
@@ -211,7 +211,7 @@ export const uploadStatusSave = async (req, res, next) => {
   }
 };
 
-export const changeStatus = async (req, res, next) => {
+const changeStatus = async (req, res, next) => {
   try {
     const result = await Upload.updateOne(
       { _id: req.body.id },
@@ -230,7 +230,7 @@ export const changeStatus = async (req, res, next) => {
   }
 };
 
-export const setRequestStatus = async (req, res, next) => {
+const setRequestStatus = async (req, res, next) => {
   try {
     const result = await Upload.updateMany(
       { readStatus: false },
@@ -246,4 +246,14 @@ export const setRequestStatus = async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+module.exports = {
+  getRequests,
+  getOneRequest,
+  updateUpload,
+  uploadUploadDataSave,
+  uploadStatusSave,
+  changeStatus,
+  setRequestStatus,
 };

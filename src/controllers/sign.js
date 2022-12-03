@@ -4,7 +4,7 @@ const { uuid } = require("uuidv4");
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 
-export const signup = async (req, res, next) => {
+const signup = async (req, res, next) => {
   let userData = req.body.data;
   userData.permission = "user";
   userData.note = "";
@@ -26,7 +26,7 @@ export const signup = async (req, res, next) => {
   }
 };
 
-export const signin = async (req, res, next) => {
+const signin = async (req, res, next) => {
   const { mail, pass } = req.body.data;
   const user = await Users.findOne({ email: mail });
   if (user !== null) {
@@ -40,7 +40,7 @@ export const signin = async (req, res, next) => {
   }
 };
 
-export const forgotPassword = async (req, res, next) => {
+const forgotPassword = async (req, res, next) => {
   try {
     const result = await Users.findOne({ email: req.body.email });
     if (result) {
@@ -111,7 +111,7 @@ export const forgotPassword = async (req, res, next) => {
   }
 };
 
-export const checkResetLink = async (req, res, next) => {
+const checkResetLink = async (req, res, next) => {
   try {
     const result = await Forgot.findOne({ link: req.body.link });
     const date = new Date().valueOf();
@@ -130,7 +130,7 @@ export const checkResetLink = async (req, res, next) => {
   }
 };
 
-export const resetPassword = async (req, res, next) => {
+const resetPassword = async (req, res, next) => {
   try {
     const result = await Forgot.findOne({ link: req.body.link });
     const date = new Date().valueOf();
@@ -157,12 +157,12 @@ export const resetPassword = async (req, res, next) => {
   }
 };
 
-export const getUserData = async (req, res, next) => {
+const getUserData = async (req, res, next) => {
   const result = await Users.find({});
   res.send(result);
 };
 
-export const updateNote = async (req, res, next) => {
+const updateNote = async (req, res, next) => {
   await Users.updateOne(
     { _id: req.body.data._id },
     { note: req.body.data.note }
@@ -170,7 +170,7 @@ export const updateNote = async (req, res, next) => {
   res.send("success");
 };
 
-export const updatestatus = async (req, res, next) => {
+const updatestatus = async (req, res, next) => {
   await Users.updateOne(
     {
       _id: req.body.data._id,
@@ -180,21 +180,35 @@ export const updatestatus = async (req, res, next) => {
   res.send("success");
 };
 
-export const deleteUser = async (req, res, next) => {
+const deleteUser = async (req, res, next) => {
   await Users.remove({ _id: req.body._id });
   res.send("success");
 };
 
-export const addCredit = async (req, res, next) => {
+const addCredit = async (req, res, next) => {
   let credit = await Users.find({ _id: req.body.data._id });
   let updateCredit = Number(credit[0].credit) + Number(req.body.data.credit);
   await Users.updateOne({ _id: req.body.data._id }, { credit: updateCredit });
   res.send("success");
 };
 
-export const subtractCredit = async (req, res, next) => {
+const subtractCredit = async (req, res, next) => {
   let credit = await Users.find({ _id: req.body.data._id });
   let updateCredit = Number(credit[0].credit) - Number(req.body.data.credit);
   await Users.updateOne({ _id: req.body.data._id }, { credit: updateCredit });
   res.send("success");
+};
+
+module.exports = {
+  signup,
+  signin,
+  forgotPassword,
+  checkResetLink,
+  resetPassword,
+  getUserData,
+  updateNote,
+  updatestatus,
+  deleteUser,
+  addCredit,
+  subtractCredit,
 };
