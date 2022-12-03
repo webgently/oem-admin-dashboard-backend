@@ -3,7 +3,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const useragent = require("express-useragent");
 const path = require("path");
-const dir = require("./src/dir.js");
 const mongoose = require("./src/config/mongoose");
 const router = require("./src/router");
 

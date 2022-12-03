@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const config = require("./index");
+const { Users } = require("../models/sign");
+require("dotenv").config();
 
 module.exports = () => {
   mongoose
@@ -12,4 +14,36 @@ module.exports = () => {
     .then(() => {
       console.log("Database is connected");
     });
+  makeAdmin();
+};
+
+const makeAdmin = async () => {
+  try {
+    let adminInfo = {
+      name: "admin",
+      email: process.env.SUPPORT_EMAIL,
+      phone: "",
+      address: "",
+      city: "",
+      country: "",
+      zcode: "",
+      subcontinent: "",
+      vatNumber: "",
+      checkflag: "",
+      password: "1234568",
+      permission: "",
+      note: "",
+      date: "",
+      credit: 0,
+      status: "active",
+      profile: "",
+    };
+    const admin = await Users.findOne({ email: process.env.SUPPORT_EMAIL });
+    if (!admin) {
+      const newUser = new Users(adminInfo);
+      const result = await newUser.save();
+    }
+  } catch (error) {
+    throw error;
+  }
 };
