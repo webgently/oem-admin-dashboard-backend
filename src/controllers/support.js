@@ -1,6 +1,6 @@
-import { Users } from "../models/sign";
-import { Support } from "../models/support";
-import { fileChattingList } from "../models/user/fileChattingList";
+const { Users } = require("../models/sign");
+const { Support } = require("../models/support");
+const { fileChattingList } = require("../models/user/fileChattingList");
 
 export const getSupportID = async (req, res, next) => {
   try {

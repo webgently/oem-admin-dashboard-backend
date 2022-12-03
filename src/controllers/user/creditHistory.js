@@ -1,4 +1,4 @@
-import { CreditHistory } from "../../models/user/creditHistory";
+const { CreditHistory } = require("../../models/user/creditHistory");
 
 export const getCreditHistory = async (req, res, next) => {
   try {

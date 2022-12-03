@@ -1,7 +1,7 @@
-import { Users } from "../models/sign";
-import { Privacy } from "../models/privacy";
-import { Daily } from "../models/daily";
-import { Logo } from "../models/logo";
+const { Users } = require("../models/sign");
+const { Privacy } = require("../models/privacy");
+const { Daily } = require("../models/daily");
+const { Logo } = require("../models/logo");
 
 export const updateProfile = async (req, res, next) => {
   const {

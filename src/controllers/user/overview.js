@@ -1,5 +1,5 @@
-import { Upload } from "../../models/user/uploadFile";
-import { Support } from "../../models/support";
+const { Upload } = require("../../models/user/uploadFile");
+const { Support } = require("../../models/support");
 
 export const getDataByOrderID = async (req, res, next) => {
   try {

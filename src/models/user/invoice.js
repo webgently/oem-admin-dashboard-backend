@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const creditSchema = new Schema({
   userId: { type: String, require: true },

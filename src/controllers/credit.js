@@ -1,5 +1,5 @@
-import { Credits } from "../models/credit";
-import { Fee } from "../models/fee";
+const { Credits } = require("../models/credit");
+const { Fee } = require("../models/fee");
 
 export const createCredit = async (req, res, next) => {
   const newCredit = new Credits(req.body.data);

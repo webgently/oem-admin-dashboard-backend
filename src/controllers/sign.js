@@ -1,5 +1,5 @@
-import { Users } from "../models/sign";
-import { Forgot } from "../models/forgot";
+const { Users } = require("../models/sign");
+const { Forgot } = require("../models/forgot");
 const { uuid } = require("uuidv4");
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();

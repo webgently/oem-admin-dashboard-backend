@@ -1,5 +1,5 @@
-import { Support } from "../models/support";
-import { fileChattingList } from "../models/user/fileChattingList";
+const { Support } = require("../models/support");
+const { fileChattingList } = require("../models/user/fileChattingList");
 
 module.exports = (io) => {
   io.on("connection", async (socket) => {

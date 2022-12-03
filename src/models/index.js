@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const rafflesSchema = new Schema({
   raffleId: { type: Number, require: true, default: -1 },

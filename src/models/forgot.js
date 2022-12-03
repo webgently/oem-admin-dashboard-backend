@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const forgotSchema = new Schema({
   email: { type: String, require: true },

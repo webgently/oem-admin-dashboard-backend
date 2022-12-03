@@ -1,5 +1,6 @@
-import { Invoice } from "../../models/user/invoice";
-import { Users } from "../../models/sign";
+const { Invoice } = require("../../models/user/invoice");
+const { Users } = require("../../models/sign");
+
 const { uuid } = require("uuidv4");
 const stripe = require("stripe")(process.env.STRIPE_PUBLIC_KEY);
 const sgMail = require("@sendgrid/mail");

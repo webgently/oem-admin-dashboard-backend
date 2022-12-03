@@ -1,6 +1,6 @@
-import { Upload } from "../../models/user/uploadFile";
-import { CreditHistory } from "../../models/user/creditHistory";
-import { Users } from "../../models/sign";
+const { Upload } = require("../../models/user/uploadFile");
+const { CreditHistory } = require("../../models/user/creditHistory");
+const { Users } = require("../../models/sign");
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 

@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const dailySchema = new Schema({
   day: { type: String, require: true },

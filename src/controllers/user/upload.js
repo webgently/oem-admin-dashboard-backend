@@ -1,4 +1,5 @@
-import { Upload } from "../../models/user/uploadFile";
+const { Upload } = require("../../models/user/uploadFile");
+
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 

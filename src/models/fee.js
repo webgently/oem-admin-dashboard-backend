@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const feeSchema = new Schema({
   fee: { type: Number, require: true },

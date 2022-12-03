@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const supportSchema = new Schema({
   from: { type: String, require: true },

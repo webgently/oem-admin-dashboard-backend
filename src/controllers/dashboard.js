@@ -1,9 +1,8 @@
-import { Service } from "../models/service";
-import { Users } from "../models/sign";
-import { Support } from "../models/support";
-import { Upload } from "../models/user/uploadFile";
-import { Daily } from "../models/daily";
-import { CreditHistory } from "../models/user/creditHistory";
+const { Service } = require("../models/service");
+const { Users } = require("../models/sign");
+const { Support } = require("../models/support");
+const { Upload } = require("../models/user/uploadFile");
+const { Daily } = require("../models/daily");
 
 export const getDashBoardData = async (req, res, next) => {
   try {
