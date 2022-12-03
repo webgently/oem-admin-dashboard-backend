@@ -1,8 +1,15 @@
-import mongoose from 'mongoose'
-import config from "./index"
+const mongoose = require("mongoose");
+const config = require("./index");
 
-export default () => {
-    mongoose.connect(config.test, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true, useCreateIndex: true }).then(() => {
-        console.log('Database is connected');
+module.exports = () => {
+  mongoose
+    .connect(config.test, {
+      useNewUrlParser: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
     })
-}
+    .then(() => {
+      console.log("Database is connected");
+    });
+};

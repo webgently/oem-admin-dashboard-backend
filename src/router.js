@@ -1,11 +1,11 @@
-import routerx from "express-promise-router";
+const express = require("express");
 const multer = require("multer");
 const FileUploader = require("./upload.js");
 const path = require("path");
 const fileconfig = require("./dir");
 const Uploader1 = new FileUploader(path.join(fileconfig.logoBaseUrl));
 const Uploader2 = new FileUploader(path.join(fileconfig.fileServiceUrl));
-const router = routerx();
+const router = express.Router();
 
 /* User Manage */
 import {
@@ -204,4 +204,5 @@ import {
 router.post("/getCreditHistory", getCreditHistory);
 router.post("/getCreditByOrderID", getCreditByOrderID);
 
-export default router;
+module.exports = router;
+c;
