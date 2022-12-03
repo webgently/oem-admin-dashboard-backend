@@ -4,7 +4,7 @@
   "description": "game backend",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/fxwinz.js",
+    "start": "nodemon --exec babel-node server.js",
     "build": "babel src -d dist",
     "test": "echo \"No test specified\" && exit 0"
   },

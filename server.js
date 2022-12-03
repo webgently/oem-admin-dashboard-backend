@@ -3,16 +3,16 @@ import express from "express";
 import bodyParser from "body-parser";
 import useragent from "express-useragent";
 import path from "path";
-import dir from "../dir.js";
-import mongoose from "./config/mongoose";
-import router from "./router";
+import dir from "./src/dir.js";
+import mongoose from "./src/config/mongoose";
+import router from "./src/router";
 
 mongoose();
 
 const port = 2083;
 const app = express();
 const http = require("http").createServer(app);
-const socket = require("./socket/index.js");
+const socket = require("./src/socket/index.js");
 
 app.use(useragent.express());
 app.use(cors({ origin: "*" }));
