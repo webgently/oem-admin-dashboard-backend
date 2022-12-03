@@ -9,4 +9,5 @@ const creditSchema = new Schema({
   profile: { type: String, require: true },
 });
 
-export const fileChattingList = model("fileChattingList", creditSchema);
+const fileChattingList = model("fileChattingList", creditSchema);
+module.exports = { fileChattingList };

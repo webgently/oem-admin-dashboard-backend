@@ -19,4 +19,5 @@ const usersSchema = new Schema({
   status: { type: String, require: true },
   profile: { type: String, require: true },
 });
-export const Users = model("users", usersSchema);
+const Users = model("users", usersSchema);
+module.exports = { Users };

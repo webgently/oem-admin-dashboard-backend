@@ -14,4 +14,5 @@ const creditSchema = new Schema({
   vatCharge: { type: Number, require: true },
 });
 
-export const Invoice = model("invoice", creditSchema);
+const Invoice = model("invoice", creditSchema);
+module.exports = { Invoice };

@@ -6,4 +6,6 @@ const creditHistorySchema = new Schema({
   credit: { type: Number, require: true },
   date: { type: String, require: true },
 });
-export const CreditHistory = model("creditHistory", creditHistorySchema);
+
+const CreditHistory = model("creditHistory", creditHistorySchema);
+module.exports = { CreditHistory };

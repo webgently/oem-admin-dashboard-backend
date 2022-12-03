@@ -28,4 +28,5 @@ const creditSchema = new Schema({
   createdAt: { type: String, require: true },
   readStatus: { type: Boolean, require: true },
 });
-export const Upload = model("upload", creditSchema);
+const Upload = model("upload", creditSchema);
+module.exports = { Upload };

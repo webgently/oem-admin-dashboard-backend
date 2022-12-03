@@ -6,4 +6,5 @@ const dailySchema = new Schema({
   close: { type: String, require: true },
   holyday: { type: Boolean, require: true },
 });
-export const Daily = model("daily", dailySchema);
+const Daily = model("daily", dailySchema);
+module.exports = { Daily };

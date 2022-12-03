@@ -8,4 +8,5 @@ const supportSchema = new Schema({
   status: { type: Boolean, require: true },
 });
 
-export const Support = model("support", supportSchema);
+const Support = model("support", supportSchema);
+module.exports = { Support };

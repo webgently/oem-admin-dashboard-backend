@@ -6,4 +6,5 @@ const logoSchema = new Schema({
   type: { type: String, require: true },
   rename: { type: String, require: true },
 });
-export const Logo = model("logofile", logoSchema);
+const Logo = model("logofile", logoSchema);
+module.exports = { Logo };

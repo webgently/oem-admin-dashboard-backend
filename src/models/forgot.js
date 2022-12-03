@@ -5,4 +5,5 @@ const forgotSchema = new Schema({
   link: { type: String, require: true },
   sendDate: { type: Number, require: true },
 });
-export const Forgot = model("forgot", forgotSchema);
+const Forgot = model("forgot", forgotSchema);
+module.exports = { Forgot };

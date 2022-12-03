@@ -3,4 +3,5 @@ const { Schema, model } = require("mongoose");
 const privacySchema = new Schema({
   privacy: { type: String, require: true },
 });
-export const Privacy = model("privacy", privacySchema);
+const Privacy = model("privacy", privacySchema);
+module.exports = { Privacy };

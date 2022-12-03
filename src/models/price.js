@@ -5,4 +5,5 @@ const priceSchema = new Schema({
   service: { type: String, require: true },
   credit: { type: String, require: true },
 });
-export const Prices = model("price", priceSchema);
+const Prices = model("price", priceSchema);
+module.exports = { Prices };
