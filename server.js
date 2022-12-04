@@ -3,15 +3,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const useragent = require("express-useragent");
 const path = require("path");
-const mongoose = require("./src/config/mongoose");
-const router = require("./src/router");
+const mongoose = require("./config/mongoose");
+const router = require("./router");
 
 mongoose();
 
 const port = 2083;
 const app = express();
 const http = require("http").createServer(app);
-const socket = require("./src/socket/index.js");
+const socket = require("./socket/index.js");
 
 app.use(useragent.express());
 app.use(cors({ origin: "*" }));

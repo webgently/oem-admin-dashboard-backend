@@ -30,7 +30,7 @@ const makeAdmin = async () => {
       subcontinent: "",
       vatNumber: "",
       checkflag: "",
-      password: "1234568",
+      password: "12345678",
       permission: "admin",
       note: "",
       date: "",
