@@ -1,6 +1,5 @@
 const { Invoice } = require("../../models/user/invoice");
 const { Users } = require("../../models/sign");
-
 const { uuid } = require("uuidv4");
 const stripe = require("stripe")(process.env.STRIPE_PUBLIC_KEY);
 const sgMail = require("@sendgrid/mail");
@@ -52,7 +51,7 @@ const buyCredit = async (req, res, next) => {
     const userMail = `
       <div style="display: flex; justify-content: center">
         <div style="padding: 10vh 14vw;">
-            <h2 style="text-align: center">Receipt from Zip Tuning Team</h2>
+            <h2 style="text-align: center">Receipt from OEMSERVICE</h2>
             <p style="text-align: center">Receipt #: ${other.receipt}</p>
             <div style="display: flex; padding-top: 2vh">
                 <div style="flex-direction: column; padding: 0 4vw;">
@@ -121,16 +120,18 @@ const buyCredit = async (req, res, next) => {
             </div>
             <div style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding: 2vh 0; margin: 4vh 4vw">
             <div style="text-align: center">
-              If you have any questions, contact us at&nbsp;<b>jonas@ecmtweaks.se</b>.
+              If you have any questions, contact us at&nbsp;<b>${
+                process.env.SUPPORT_EMAIL
+              }</b>.
             </div>
           </div>
-          <center>You're receiving this email because you made a purchase at ZipTuning</center>
+          <center>You're receiving this email because you made a purchase at OEMSERVICE</center>
         </div>
       </div>`;
     const adminMail = `
       <div style="display: flex; justify-content: center">
         <div style="padding: 10vh 14vw;">
-            <h2 style="text-align: center">Receipt from Zip Tuning Team</h2>
+            <h2 style="text-align: center">Receipt from OEMSERVICE</h2>
             <p style="text-align: center">Receipt #: ${other.receipt}</p>
             <div style="display: flex; padding-top: 2vh">
                 <div style="flex-direction: column; padding: 0 4vw;">
@@ -199,10 +200,12 @@ const buyCredit = async (req, res, next) => {
             </div>
             <div style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding: 2vh 0; margin: 4vh 4vw">
             <div style="text-align: center">
-              If you have any questions, contact us at&nbsp;<b>jonas@ecmtweaks.se</b>.
+              If you have any questions, contact us at&nbsp;<b>${
+                process.env.SUPPORT_EMAIL
+              }</b>.
             </div>
           </div>
-          <center>You're receiving this email because you made a purchase at ZipTuning</center>
+          <center>You're receiving this email because you made a purchase at OEMSERVICE</center>
         </div>
       </div>`;
     if (result1 && result2) {
@@ -268,7 +271,12 @@ const getOneInvoice = async (req, res, next) => {
     const result1 = await Invoice.findOne({ _id: req.body.id });
     const result2 = await Users.findOne({ _id: req.body.userId });
     if (result2) {
-      res.send({ status: true, result1, result2 });
+      res.send({
+        status: true,
+        result1,
+        result2,
+        adminMail: process.env.SUPPORT_EMAIL,
+      });
     } else {
       res.send({ status: false, data: "Interanal server error" });
     }
