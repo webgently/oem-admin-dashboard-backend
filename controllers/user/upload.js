@@ -1,7 +1,7 @@
 const { Upload } = require("../../models/user/uploadFile");
-
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const uploadFileDataSave = async (req, res, next) => {
   try {
@@ -13,43 +13,44 @@ const uploadFileDataSave = async (req, res, next) => {
     const upload = new Upload(data);
     const result = await upload.save();
     const adminMail = `
-      <div style="display: flex; justify-content: center">
-        <div style="padding: 10vh 14vw;">
-          <div style="display: flex; justify-content: center">
-            <img src="https://ipfs.io/ipfs/QmeJPsPL6z3583s6piViWoAPAkYWSY6hZeoocq6y7zSnZh" width="75%" />
-          </div>
-          <div style="border-bottom: 2px solid black;"></div>
-          <div style="display: flex; justify-content: start; padding-top: 2vh;">
-            <div>
-              <h1>Received file(${data.orderId}) from ${data.client}</h1>
-              <p style="font-size: 16px;">${data.message}</p>
-            </div>
-          </div>
-          <div style="padding-top: 4vh;"><button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;"><a href="${process.env.SITE_DOMAIN}/admin_upload" style=" color: white;">GO TO CUSTOMER PORTAL</a></button></div>
+      <div style="padding: 10vh 14vw;">
+        <div style="text-align: center;">
+          <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
+        </div>
+        <h1 style="text-align: center; padding-top: 1vh">Received file(${data.orderId}) from ${data.client}</h1>
+        <p style="font-size: 16px;">${data.message}</p>
+        <div style="padding-top: 4vh;">
+          <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
+            <a href="${process.env.SITE_DOMAIN}/admin_upload" style=" color: white; text-decoration: none;">GO TO CUSTOMERPORTAL</a>
+          </button>
         </div>
       </div>`;
     const userMail = `
-      <div style="display: flex; justify-content: center">
-        <div style="padding: 10vh 14vw;">
-          <div style="display: flex; justify-content: center">
-            <img src="https://ipfs.io/ipfs/QmeJPsPL6z3583s6piViWoAPAkYWSY6hZeoocq6y7zSnZh" width="75%" />
-          </div>
-          <div style="border-bottom: 2px solid black;"></div>
-          <div style="display: flex; justify-content: start; padding-top: 2vh;">
-            <div>
-              <h1>Thank you for uploading!</h1>
-              <div style="font-size: 16px;">
-                <p>Dear ${data.client}, thank you for uploading your file to use, we will revert back to you shortly.</p>
-                <p>File reference ID: ${data.orderId}</p>
-                <p>When we have finished your tuningfile you can download it in our portal.</p>
-              </div>
-            </div>
-          </div>
-          <div style="padding-top: 4vh;"><button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;"><a href="${process.env.SITE_DOMAIN}/overview" style=" color: white;">GO TO CUSTOMER PORTAL</a></button></div>
+      <div style="padding: 10vh 14vw;">
+        <div style="text-align: center;">
+          <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
         </div>
+        <h1 style="text-align: center; padding-top: 1vh">Thank you for uploading!</h1>
+        <div>
+          <div style="font-size: 16px;">
+            <p>Dear ${data.client}, thank you for uploading your file to us.</p>
+            <p>We will get back to you soon.</p>
+            <p>File reference code: ${data.orderId}</p>
+            <p>Do you have questions about your uploaded file? Please use the support function under ”Files Overview” and corresponding
+            order id.</p>
+            <p>When we have finished your requested file, it is directly available for download at the portal. Make sure you have
+            sufficient amount of credits for the service on your accont to be able to recive the updated file</p>
+          </div>
+        </div>
+          <div style="padding-top: 4vh;">
+            <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
+              <a href="${process.env.SITE_DOMAIN}/overview" style=" color: white; text-decoration: none;">GO TO CUSTOMER PORTAL</a>
+            </button>
+          </div>
+        <p>Stage 1 and most common DPF/EGR off files have an average delivery time of 20 minutes. For stages 2 and 3 and special
+          DPF/EGR off files the estimated delivery time differs per file.</p>
       </div>`;
     if (result) {
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
       const adminMsg = {
         to: process.env.SUPPORT_EMAIL,
         from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above

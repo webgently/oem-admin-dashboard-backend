@@ -3,6 +3,7 @@ const { CreditHistory } = require("../../models/user/creditHistory");
 const { Users } = require("../../models/sign");
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const getRequests = async (req, res, next) => {
   try {
@@ -104,26 +105,24 @@ const uploadUploadDataSave = async (req, res, next) => {
       result2 = d.save();
     }
     const userMail = `
-      <div style="display: flex; justify-content: center">
-        <div style="padding: 10vh 14vw;">
-          <div style="display: flex; justify-content: center">
-            <img src="https://ipfs.io/ipfs/QmeJPsPL6z3583s6piViWoAPAkYWSY6hZeoocq6y7zSnZh" width="75%" />
-          </div>
-          <div style="border-bottom: 2px solid black;"></div>
-          <div style="display: flex; justify-content: start; padding-top: 2vh;">
-            <div>
-              <h1>Your file is ready!</h1>
-              <div style="font-size: 16px;">
-                <p>Dear ${user.name}, your uploaded file(id: ${data.orderId}) has been completed and is ready for installation.</p>
-                <p>Please be careful when writing files to ECUs! 
-                  As a profestional tuner, we expect you to have confidence, knowledge and experience in doing this kind of work.
-                </p>
-                <p>Thank you for your trust in our services and we hope to see you again soon!</p>
-              </div>
-            </div>
-          </div>
-          <div style="padding-top: 4vh;"><button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;"><a href="${process.env.SITE_DOMAIN}/overview" style=" color: white;">GO TO CUSTOMER PORTAL</a></button></div>
+      <div style="padding: 10vh 14vw;">
+        <div style="text-align: center;">
+            <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
         </div>
+        <h1 style="text-align: center;">Your file is ready!</h1>
+        <div style="font-size: 16px; padding-top: 1vh;">
+          <p>Dear ${user.name}, your uploaded file(id: ${data.orderId}) has been completed and its ready for download</p>
+          <p>Let us know if there is any questions regarding the file by using the support button under ”files overview” and the
+          corresponding ID.
+          </p>
+        </div>
+        <div style="padding-top: 4vh;">
+          <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
+            <a href="${process.env.SITE_DOMAIN}/overview" style=" color: white; text-decoration: none;">GO TO CUSTOMER PORTAL</a>
+          </button>
+        </div>
+        <p>Do you want free credits?
+        Send us your dyno result , your video of test driving, pop&bangs or other cool stuff related to our file service!</p>
       </div>`;
     const userMsg = {
       to: user.email,
@@ -132,7 +131,6 @@ const uploadUploadDataSave = async (req, res, next) => {
       text: `File(${data.orderId}) Uploading!`,
       html: userMail,
     };
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     sgMail.send(userMsg).then(
       () => {},
       (error) => {
@@ -162,31 +160,36 @@ const uploadStatusSave = async (req, res, next) => {
       const updataCredit = user.credit + data.credit;
       await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
       const userMail = `
-        <div style="display: flex; justify-content: center">
-          <div style="padding: 10vh 14vw;">
-            <div style="display: flex; justify-content: center">
-              <img src="https://ipfs.io/ipfs/QmeJPsPL6z3583s6piViWoAPAkYWSY6hZeoocq6y7zSnZh" width="75%" />
-            </div>
-            <div style="border-bottom: 2px solid black;"></div>
-            <div style="display: flex; justify-content: start; padding-top: 2vh;">
-              <div>
-                <h1>Your file is cancel!</h1>
-                <div style="font-size: 16px;">
-                  <p>Dear ${user.name}, your uploaded file(id: ${data.orderId}) has been cancelled and is ready for installation.</p>
-                </div>
-              </div>
-            </div>
-            <div style="padding-top: 4vh;"><button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;"><a href="${process.env.SITE_DOMAIN}/overview" style=" color: white;">GO TO CUSTOMER PORTAL</a></button></div>
+        <div style="padding: 10vh 14vw;">
+          <div style="text-align: center;">
+            <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
           </div>
+          <h1 style="text-align: center;">Unfortunately, your file cannot be processed!</h1>
+          <div style="font-size: 16px; padding-top: 1vh;">
+            <p>Dear ${user.name}, Your uploaded file(id: ${data.orderId}) is unfortunately not possible to process.</p>
+            <p>We cannot handle the file you have uploaded on our portal. Unfortunately, the reason can be many and we recommend that
+            you use the support button under "file overview" and the corresponding ID to get answers regarding your particular file.
+            No credits have been taken from your account.</p>
+          </div>
+          <div style="padding-top: 4vh;">
+            <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
+              <a href="${process.env.SITE_DOMAIN}/overview" style=" color: white; text-decoration: none;">GO TO CUSTOMER PORTAL</a>
+            </button>
+          </div>
+          <p style="font-weight: bold; padding-top: 1vh;">F.A.Q</p>
+          <p>Why couldn't you handle my uploaded file?</p>
+          <p>• The file format is wrong (we handle .bin, .org, .zip, .rar, .bdc, .tun and various slave formats)</p>
+          <p>• Slave file that is linked to a different master than OEM service</p>
+          <p>• The file is not original / already modified (always attach original together with what you upload)</p>
+          <p>• We do not offer the service requested</p>
         </div>`;
       const userMsg = {
-        to: data.email,
+        to: user.email,
         from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
         subject: "File Cancelled!",
         text: `File(${data.orderId}) Cancelled!`,
         html: userMail,
       };
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
       sgMail.send(userMsg).then(
         () => {},
         (error) => {

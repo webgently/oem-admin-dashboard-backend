@@ -1,8 +1,9 @@
 const { Users } = require("../models/sign");
 const { Forgot } = require("../models/forgot");
-const { uuid } = require("uuidv4");
+const { v4: uuid } = require("uuid");
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const signup = async (req, res, next) => {
   let userData = req.body.data;
@@ -49,7 +50,7 @@ const forgotPassword = async (req, res, next) => {
       data.email = req.body.email;
       data.link = `${process.env.SITE_DOMAIN}/reset-password/${req.body.email}/${idempotency_key}`;
       data.sendDate = new Date().valueOf();
-      const exist = Forgot.findOne({ email: req.body.email });
+      const exist = await Forgot.findOne({ email: req.body.email });
       let flag;
       if (exist) {
         flag = await Forgot.updateOne(
@@ -63,25 +64,26 @@ const forgotPassword = async (req, res, next) => {
         const resetLink = new Forgot(data);
         flag = await resetLink.save();
       }
+
       if (flag) {
         const userMail = `
           <div style="display: flex; justify-content: center">
             <div style="padding: 10vh 14vw;">
-              <div style="display: flex; justify-content: center">
-                <img src="https://ipfs.io/ipfs/QmeJPsPL6z3583s6piViWoAPAkYWSY6hZeoocq6y7zSnZh" width="75%" />
-              </div>
-              <div style="border-bottom: 2px solid black;"></div>
-              <div style="display: flex; justify-content: start; padding-top: 2vh;">
-                <div>
-                  <h1>Forgotten Your ZipTuning Password? No worries — it happens!</h1>
+                <div style="text-align: center;">
+                    <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
                 </div>
-              </div>
-              <div style="padding-top: 4vh;"><button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;"><a href="${data.link}" style=" color: white;">Reset Password</a></button></div>
-              <div style="font-size: 16px; padding-top: 2vh">
-                <p>For your security, this link will use only one time, after you reset your password. Your password will be reset across ZipTuning product.</p>
-              </div>
-              </div>
-          </div>`;
+                <div style="text-align: center; padding-top: 2vh;">
+                    <h1>Forgot your password?</h1>
+                </div>
+                <div style="font-size: 16px; text-align: center;">
+                    <p>You have requested a new password, use the link below and reset it now.</p>
+                </div>
+                <div style="padding-top: 4vh; text-align: center;">
+                    <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;"><a href="${data.link}" style="color: white; text-decoration: none;">Reset Password</a>
+                    </button>
+                </div>
+            </div>
+        </div>`;
         const userMsg = {
           to: data.email,
           from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
@@ -89,7 +91,7 @@ const forgotPassword = async (req, res, next) => {
           text: `Reset Password(${data.link})`,
           html: userMail,
         };
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
         sgMail.send(userMsg).then(
           () => {},
           (error) => {
