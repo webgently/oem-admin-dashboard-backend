@@ -38,7 +38,7 @@ const makeAdmin = async () => {
       status: "active",
       profile: "",
     };
-    const admin = await Users.findOne({ email: process.env.SUPPORT_EMAIL });
+    const admin = await Users.findOne({ permission: "admin" });
     if (!admin) {
       const newUser = new Users(adminInfo);
       const result = await newUser.save();
