@@ -55,7 +55,7 @@ const buyCredit = async (req, res, next) => {
         </div>
         <div style="font-size: 16px; padding-top: 2vh;">
           <p>Attached is your receipt for the purchase of credits made at portal.oemservice.se
-            If you have any questions about your purchase, please contact us at ekonomi@oemservice.se
+            If you have any questions about your purchase, please contact us at ${process.env.SUPPORT_EMAIL}
           </p>
         </div>
       </div>`;
