@@ -12,6 +12,7 @@ const port = 2083;
 const app = express();
 const http = require("http").createServer(app);
 const socket = require("./socket/index.js");
+const { nextTick } = require("process");
 
 app.use(useragent.express());
 app.use(cors({ origin: "*" }));
@@ -23,7 +24,15 @@ app.use(bodyParser.text({ type: "text/html" }));
 app.use(express.static(__dirname + "/build"));
 app.use(express.static(path.join(__dirname, "upload")));
 
-app.use("/api", router);
+app.use(
+  "/api",
+  (req, res, next) => {
+    console.log(req.url);
+    next();
+  },
+  router
+);
+
 app.get("*", (req, res) => res.sendFile(__dirname + "/build/index.html"));
 
 const io = require("socket.io")(http, {

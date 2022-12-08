@@ -4,6 +4,7 @@ const FileUploader = require("./upload.js");
 const path = require("path");
 const fileconfig = require("./dir");
 const Uploader1 = new FileUploader(path.join(fileconfig.logoBaseUrl));
+
 const Uploader2 = new FileUploader(path.join(fileconfig.fileServiceUrl));
 const router = express.Router();
 
@@ -46,8 +47,11 @@ const {
   uploadDataSave,
   uploadAvatar,
   uploadAvatarDataSave,
+  uploadBg,
+  uploadBgDataSave,
   getLogo,
   getAvatar,
+  getBg,
 } = require("./controllers/setting");
 router.post("/updateProfile", updateProfile);
 router.post("/savePrivacy", savePrivacy);
@@ -64,6 +68,12 @@ router.post(
   uploadAvatarDataSave
 );
 router.post(
+  "/uploadBg",
+  multer({ storage: Uploader1.storage, fileFilter: Uploader1.filter }).any(),
+  uploadBg,
+  uploadBgDataSave
+);
+router.post(
   "/uploadLogo",
   multer({ storage: Uploader1.storage, fileFilter: Uploader1.filter }).any(),
   uploadLogo,
@@ -71,6 +81,7 @@ router.post(
 );
 router.post("/getLogo", getLogo);
 router.post("/getAvatar", getAvatar);
+router.post("/getBg", getBg);
 
 /* Support */
 const {

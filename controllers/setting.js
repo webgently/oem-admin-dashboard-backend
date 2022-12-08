@@ -2,6 +2,7 @@ const { Users } = require("../models/sign");
 const { Privacy } = require("../models/privacy");
 const { Daily } = require("../models/daily");
 const { Logo } = require("../models/logo");
+const { Bg } = require("../models/bg");
 
 const updateProfile = async (req, res, next) => {
   const {
@@ -154,6 +155,49 @@ const uploadAvatarDataSave = async (req, res, next) => {
   }
 };
 
+const uploadBg = async (req, res, next) => {
+  let d = req.files;
+  console.log(d);
+  let row = {};
+  for (let i in d) {
+    row[d[i].fieldname] = d[i].filename;
+  }
+  req.images = row;
+  next();
+};
+
+const uploadBgDataSave = async (req, res, next) => {
+  const exist = await Bg.findOne({});
+  let result;
+  if (exist) {
+    result = await Bg.updateOne(
+      {
+        _id: exist._id,
+      },
+      {
+        name: req.files[0].originalname,
+        size: req.files[0].size,
+        type: req.files[0].mimetype,
+        rename: req.files[0].filename,
+      }
+    );
+  } else {
+    const data = {
+      name: req.files[0].originalname,
+      size: req.files[0].size,
+      type: req.files[0].mimetype,
+      rename: req.files[0].filename,
+    };
+    const newBg = new Bg(data);
+    result = await newBg.save();
+  }
+  if (result) {
+    return res.send({ status: true, data: "logo/" + req.files[0].filename });
+  } else {
+    return res.send({ status: false, data: "Internal server error" });
+  }
+};
+
 const uploadLogo = async (req, res, next) => {
   let d = req.files;
   let row = {};
@@ -198,6 +242,15 @@ const getAvatar = async (req, res, next) => {
   }
 };
 
+const getBg = async (req, res, next) => {
+  const result = await Bg.findOne({});
+  if (result) {
+    return res.send({ status: true, data: "logo/" + result.rename });
+  } else {
+    return res.send({ status: false, data: "Internal server error" });
+  }
+};
+
 module.exports = {
   updateProfile,
   savePrivacy,
@@ -208,8 +261,11 @@ module.exports = {
   getOneDaily,
   uploadAvatar,
   uploadAvatarDataSave,
+  uploadBg,
+  uploadBgDataSave,
   uploadLogo,
   uploadDataSave,
   getLogo,
   getAvatar,
+  getBg,
 };
