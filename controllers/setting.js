@@ -157,7 +157,6 @@ const uploadAvatarDataSave = async (req, res, next) => {
 
 const uploadBg = async (req, res, next) => {
   let d = req.files;
-  console.log(d);
   let row = {};
   for (let i in d) {
     row[d[i].fieldname] = d[i].filename;

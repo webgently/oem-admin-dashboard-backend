@@ -12,7 +12,6 @@ const port = 2083;
 const app = express();
 const http = require("http").createServer(app);
 const socket = require("./socket/index.js");
-const { nextTick } = require("process");
 
 app.use(useragent.express());
 app.use(cors({ origin: "*" }));

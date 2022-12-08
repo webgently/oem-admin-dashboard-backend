@@ -28,9 +28,7 @@ module.exports = (io) => {
       await io.sockets.emit(e.data.to, { data: e.data });
       await io.sockets.emit("fileReply" + e.data.to.substr(0, 24), {
         alertMsg,
-        from: e.data.to
-          .replace(e.data.to.substr(0, 24), "")
-          .replace(e.orderId, ""),
+        from: e.data.to.replace(e.data.to.substr(0, 24), "").slice(0, -1),
       });
       await saveChattingMsg(e.data);
     });

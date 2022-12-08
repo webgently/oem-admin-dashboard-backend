@@ -111,6 +111,90 @@ const updateUserReadStatus = async (req, res, next) => {
   }
 };
 
+const uploadChatFile = async (req, res, next) => {
+  let d = req.files;
+  let row = {};
+  for (let i in d) {
+    row[d[i].fieldname] = d[i].filename;
+  }
+  req.images = row;
+  next();
+};
+
+const sendToUserPerFile = async (req, res, next) => {
+  const data = JSON.parse(req.body.data);
+  data.msg = `${req.files[0].originalname}->${req.files[0].filename}->file`;
+  try {
+    const support = new Support(data);
+    const result = await support.save();
+    if (result) {
+      const alertMsg = `Received message of admin about your upload file-${req.body.orderId}`;
+      await req.app.get("io").emit(data.to, { data });
+      await req.app.get("io").emit("fileReply" + data.to.substr(0, 24), {
+        alertMsg,
+        from: data.to.replace(data.to.substr(0, 24), "").slice(0, -1),
+      });
+      res.send({ status: true, data: data.msg });
+    } else {
+      res.send({ status: false, data: "Interanal server error" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const sendToUser = async (req, res, next) => {
+  const data = JSON.parse(req.body.data);
+  try {
+    const support = new Support(data);
+    const result = await support.save();
+    const alertMsg = "Received new message";
+    if (result) {
+      await req.app.get("io").emit(data.to, { data, alertMsg });
+      res.send({ status: true, data: "Saved successfully" });
+    } else {
+      res.send({ status: false, data: "Interanal server error" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const sendToSupport = async (req, res, next) => {
+  const data = JSON.parse(req.body.data);
+  data.msg = `${req.files[0].originalname}->${req.files[0].filename}->file`;
+  try {
+    const alertMsg = `Received new message from ${data.name}`;
+    const support = new Support(data);
+    const result = await support.save();
+    if (result) {
+      await req.app.get("io").emit(data.to, { data, alertMsg });
+      res.send({ status: true, data: data.msg });
+    } else {
+      res.send({ status: false, data: "Interanal server error" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const sendToSupportPerFile = async (req, res, next) => {
+  const data = JSON.parse(req.body.data);
+  try {
+    const alertMsg = `Received new message from ${req.body.name}/R-ID: ${req.body.orderId}`;
+    const support = new Support(data);
+    const result = await support.save();
+    if (result) {
+      await req.app.get("io").emit(data.to, { data, alertMsg });
+      res.send({ status: true, data: "Saved successfully" });
+    } else {
+      res.send({ status: false, data: "Interanal server error" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
@@ -123,4 +207,9 @@ module.exports = {
   getUserUnreadCount,
   getUserUnreadPerFileCount,
   updateUserReadStatus,
+  uploadChatFile,
+  sendToUserPerFile,
+  sendToUser,
+  sendToSupport,
+  sendToSupportPerFile,
 };

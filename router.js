@@ -4,8 +4,9 @@ const FileUploader = require("./upload.js");
 const path = require("path");
 const fileconfig = require("./dir");
 const Uploader1 = new FileUploader(path.join(fileconfig.logoBaseUrl));
-
 const Uploader2 = new FileUploader(path.join(fileconfig.fileServiceUrl));
+const Uploader3 = new FileUploader(path.join(fileconfig.chatServiceUrl));
+
 const router = express.Router();
 
 /* User Manage */
@@ -92,7 +93,13 @@ const {
   getUserUnreadCount,
   getUserUnreadPerFileCount,
   updateUserReadStatus,
+  uploadChatFile,
+  sendToUserPerFile,
+  sendToUser,
+  sendToSupport,
+  sendToSupportPerFile,
 } = require("./controllers/support");
+
 router.post("/getSupportID", getSupportID);
 router.post("/getUserList", getUserList);
 router.post("/getChattingHistory", getChattingHistory);
@@ -100,7 +107,30 @@ router.post("/updateReadStatus", updateReadStatus);
 router.post("/getUserUnreadCount", getUserUnreadCount);
 router.post("/getUserUnreadPerFileCount", getUserUnreadPerFileCount);
 router.post("/updateUserReadStatus", updateUserReadStatus);
-
+router.post(
+  "/sendToUserPerFile",
+  multer({ storage: Uploader3.storage, fileFilter: Uploader3.filter }).any(),
+  uploadChatFile,
+  sendToUserPerFile
+);
+router.post(
+  "/sendToUser",
+  multer({ storage: Uploader3.storage, fileFilter: Uploader3.filter }).any(),
+  uploadChatFile,
+  sendToUser
+);
+router.post(
+  "/sendToSupport",
+  multer({ storage: Uploader3.storage, fileFilter: Uploader3.filter }).any(),
+  uploadChatFile,
+  sendToSupport
+);
+router.post(
+  "/sendToSupportPerFile",
+  multer({ storage: Uploader3.storage, fileFilter: Uploader3.filter }).any(),
+  uploadChatFile,
+  sendToSupportPerFile
+);
 /* Credit List */
 const {
   createCredit,
