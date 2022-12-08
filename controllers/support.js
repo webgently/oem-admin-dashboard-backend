@@ -145,13 +145,14 @@ const sendToUserPerFile = async (req, res, next) => {
 
 const sendToUser = async (req, res, next) => {
   const data = JSON.parse(req.body.data);
+  data.msg = `${req.files[0].originalname}->${req.files[0].filename}->file`;
   try {
     const support = new Support(data);
     const result = await support.save();
     const alertMsg = "Received new message";
     if (result) {
       await req.app.get("io").emit(data.to, { data, alertMsg });
-      res.send({ status: true, data: "Saved successfully" });
+      res.send({ status: true, data: data.msg });
     } else {
       res.send({ status: false, data: "Interanal server error" });
     }
@@ -180,13 +181,14 @@ const sendToSupport = async (req, res, next) => {
 
 const sendToSupportPerFile = async (req, res, next) => {
   const data = JSON.parse(req.body.data);
+  data.msg = `${req.files[0].originalname}->${req.files[0].filename}->file`;
   try {
     const alertMsg = `Received new message from ${req.body.name}/R-ID: ${req.body.orderId}`;
     const support = new Support(data);
     const result = await support.save();
     if (result) {
       await req.app.get("io").emit(data.to, { data, alertMsg });
-      res.send({ status: true, data: "Saved successfully" });
+      res.send({ status: true, data: data.msg });
     } else {
       res.send({ status: false, data: "Interanal server error" });
     }
