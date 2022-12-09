@@ -23,14 +23,7 @@ app.use(bodyParser.text({ type: "text/html" }));
 app.use(express.static(__dirname + "/build"));
 app.use(express.static(path.join(__dirname, "upload")));
 
-app.use(
-  "/api",
-  (req, res, next) => {
-    console.log(req.url);
-    next();
-  },
-  router
-);
+app.use("/api", router);
 
 app.get("*", (req, res) => res.sendFile(__dirname + "/build/index.html"));
 
