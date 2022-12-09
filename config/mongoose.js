@@ -33,7 +33,7 @@ const makeAdmin = async () => {
       password: "12345678",
       permission: "admin",
       note: "",
-      date: "",
+      date: new Date(),
       credit: 0,
       status: "active",
       profile: "",
