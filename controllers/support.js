@@ -14,12 +14,17 @@ const getSupportID = async (req, res, next) => {
 const getUserList = async (req, res, next) => {
   try {
     const list = await Users.find(
-      { _id: { $not: { $lte: req.body.id } } },
+      {
+        $and: [
+          { _id: { $not: { $lte: req.body.id } } },
+          { name: { $regex: req.body.search } },
+        ],
+      },
       { _id: 1, name: 1, profile: 1 }
     );
     const unreadCount = {};
     const fileList = await fileChattingList.find(
-      {},
+      { name: { $regex: req.body.search } },
       { _id: 1, name: 1, profile: 1 }
     );
     const userList = list.concat(fileList);
