@@ -32,12 +32,19 @@ const signin = async (req, res, next) => {
   const user = await Users.findOne({ email: mail });
   if (user !== null) {
     if (user.password === pass) {
-      res.send(user);
+      if (user.status === "active") {
+        res.send({ login: true, data: user });
+      } else {
+        res.send({
+          login: false,
+          data: "You have to receive allow from admin",
+        });
+      }
     } else {
-      res.send("password");
+      res.send({ login: false, data: "Password Incorrect!" });
     }
   } else {
-    res.send("not exist");
+    res.send({ login: false, data: "This email is not exist!" });
   }
 };
 
