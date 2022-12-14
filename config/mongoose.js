@@ -37,6 +37,7 @@ const makeAdmin = async () => {
       credit: 0,
       status: "active",
       profile: "",
+      support: true,
     };
     const admin = await Users.findOne({ permission: "admin" });
     if (!admin) {

@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { Users } = require("../models/sign");
 const { Support } = require("../models/support");
 const { fileChattingList } = require("../models/user/fileChattingList");
@@ -18,13 +19,16 @@ const getUserList = async (req, res, next) => {
         $and: [
           { _id: { $not: { $lte: req.body.id } } },
           { name: { $regex: req.body.search } },
+          { support: true },
         ],
       },
       { _id: 1, name: 1, profile: 1 }
     );
     const unreadCount = {};
     const fileList = await fileChattingList.find(
-      { name: { $regex: req.body.search } },
+      {
+        $and: [{ name: { $regex: req.body.search } }, { support: true }],
+      },
       { _id: 1, name: 1, profile: 1 }
     );
     const userList = list.concat(fileList);
@@ -202,6 +206,33 @@ const sendToSupportPerFile = async (req, res, next) => {
   }
 };
 
+const sendToArchive = async (req, res, next) => {
+  try {
+    const userArray = req.body.filter((s) => {
+      if (s.length < 25) return mongoose.Types.ObjectId(s);
+    });
+    const fileArray = req.body.filter((s) => {
+      if (s.length > 25) return s;
+    });
+    const result1 = await Users.updateMany(
+      { _id: { $in: userArray } },
+      { $set: { support: false } }
+    );
+    const result2 = await fileChattingList.updateMany(
+      { _id: { $in: fileArray } },
+      { $set: { support: false } }
+    );
+
+    if (result1 || result2) {
+      res.send({ status: true, data: "Move to archive successfully" });
+    } else {
+      res.send({ status: false, data: "Interanal server error" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
@@ -219,4 +250,5 @@ module.exports = {
   sendToUser,
   sendToSupport,
   sendToSupportPerFile,
+  sendToArchive,
 };

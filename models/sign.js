@@ -18,6 +18,7 @@ const usersSchema = new Schema({
   credit: { type: Number, require: true },
   status: { type: String, require: true },
   profile: { type: String, require: true },
+  support: { type: Boolean, require: true },
 });
 const Users = model("users", usersSchema);
 module.exports = { Users };

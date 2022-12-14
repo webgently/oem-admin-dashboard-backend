@@ -7,6 +7,7 @@ const creditSchema = new Schema({
   orderId: { type: String, require: true },
   name: { type: String, require: true },
   profile: { type: String, require: true },
+  support: { type: Boolean, require: true },
 });
 
 const fileChattingList = model("fileChattingList", creditSchema);

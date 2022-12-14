@@ -13,6 +13,7 @@ const signup = async (req, res, next) => {
   userData.credit = "0";
   userData.status = "in-active";
   userData.profile = "";
+  userData.support = true;
   const user = await Users.findOne({ email: userData.email });
   if (!user) {
     const newUser = new Users(userData);
