@@ -1,3 +1,4 @@
+const { Users } = require("../models/sign");
 const { Support } = require("../models/support");
 const { fileChattingList } = require("../models/user/fileChattingList");
 
@@ -9,12 +10,28 @@ module.exports = (io) => {
 
     socket.on("sendToSupport", async (e) => {
       const alertMsg = `Received new message from ${e.name}`;
-      await io.sockets.emit(e.data.to, { data: e.data, alertMsg });
+      const exist = await Users.findOne(
+        { _id: e.data.from },
+        { _id: 0, support: 1 }
+      );
+      await io.sockets.emit(e.data.to, {
+        data: e.data,
+        alertMsg,
+        support: exist.support,
+      });
       await saveChattingMsg(e.data);
     });
     socket.on("sendToSupportPerFile", async (e) => {
       const alertMsg = `Received new message from ${e.name}/R-ID: ${e.orderId}`;
-      await io.sockets.emit(e.data.to, { data: e.data, alertMsg });
+      const exist = await fileChattingList.findOne(
+        { _id: e.data.from },
+        { _id: 0, support: 1 }
+      );
+      await io.sockets.emit(e.data.to, {
+        data: e.data,
+        alertMsg,
+        support: exist.support,
+      });
       await saveChattingMsg(e.data);
     });
 
@@ -47,12 +64,21 @@ module.exports = (io) => {
         name: e.name,
         profile: e.profile,
       };
-      await io.sockets.emit("file" + e.to, { data });
+      const exist = await fileChattingList.findOne({ _id: e._id });
+      if (exist)
+        await io.sockets.emit("file" + e.to, { data, userExist: true });
+      else
+        await io.sockets.emit("file" + e.to, {
+          data,
+          userExist: false,
+        });
       const result = await updateChattingStatusPerFile(e);
       await io.sockets.emit("totalUnreadCount" + e.userId, {
         count: result.nModified,
       });
-      await saveChattingListPerFile(e);
+      const chatData = e;
+      chatData.support = true;
+      await saveChattingListPerFile(chatData);
     });
   });
 };

@@ -99,6 +99,7 @@ const {
   sendToSupport,
   sendToSupportPerFile,
   sendToArchive,
+  sendToChatBox,
 } = require("./controllers/support");
 
 router.post("/getSupportID", getSupportID);
@@ -109,6 +110,7 @@ router.post("/getUserUnreadCount", getUserUnreadCount);
 router.post("/getUserUnreadPerFileCount", getUserUnreadPerFileCount);
 router.post("/updateUserReadStatus", updateUserReadStatus);
 router.post("/sendToArchive", sendToArchive);
+router.post("/sendToChatBox", sendToChatBox);
 router.post(
   "/sendToUserPerFile",
   multer({ storage: Uploader3.storage, fileFilter: Uploader3.filter }).any(),

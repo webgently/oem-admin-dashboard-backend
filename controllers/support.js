@@ -19,7 +19,7 @@ const getUserList = async (req, res, next) => {
         $and: [
           { _id: { $not: { $lte: req.body.id } } },
           { name: { $regex: req.body.search } },
-          { support: true },
+          { support: req.body.support },
         ],
       },
       { _id: 1, name: 1, profile: 1 }
@@ -27,7 +27,10 @@ const getUserList = async (req, res, next) => {
     const unreadCount = {};
     const fileList = await fileChattingList.find(
       {
-        $and: [{ name: { $regex: req.body.search } }, { support: true }],
+        $and: [
+          { name: { $regex: req.body.search } },
+          { support: req.body.support },
+        ],
       },
       { _id: 1, name: 1, profile: 1 }
     );
@@ -77,10 +80,45 @@ const updateReadStatus = async (req, res, next) => {
 
 const getUserUnreadCount = async (req, res, next) => {
   try {
-    const data = await Support.find({
-      $and: [{ to: req.body.id }, { status: false }],
+    let supportUnreadCount = 0;
+    let archiveUnreadCount = 0;
+    const data = await Support.find(
+      {
+        $and: [{ to: req.body.id }, { status: false }],
+      },
+      { from: 1, _id: 0 }
+    );
+    const idArray = data.map((item) => item.from);
+    const list = idArray.filter(
+      (item, index) => idArray.indexOf(item) === index
+    );
+    const counts = {};
+    idArray.forEach(function (x) {
+      counts[x] = (counts[x] || 0) + 1;
     });
-    res.send({ status: true, unreadCount: data.length });
+    const userArray = list.filter((s) => {
+      if (s.length < 25) return mongoose.Types.ObjectId(s);
+    });
+    const fileArray = list.filter((s) => {
+      if (s.length > 25) return s;
+    });
+    const support1 = await Users.find(
+      { _id: { $in: userArray } },
+      { _id: 0, support: 1 }
+    );
+    const support2 = await fileChattingList.find(
+      { _id: { $in: fileArray } },
+      { _id: 0, support: 1 }
+    );
+    userArray.map((item, ind) => {
+      if (support1[ind].support) supportUnreadCount += counts[item];
+      else archiveUnreadCount += counts[item];
+    });
+    fileArray.map((item, ind) => {
+      if (support2[ind].support) supportUnreadCount += counts[item];
+      else archiveUnreadCount += counts[item];
+    });
+    res.send({ status: true, supportUnreadCount, archiveUnreadCount });
   } catch (error) {
     console.log(error);
   }
@@ -224,7 +262,36 @@ const sendToArchive = async (req, res, next) => {
     );
 
     if (result1 || result2) {
-      res.send({ status: true, data: "Move to archive successfully" });
+      req.app.get("io").emit("sendToArchive");
+      res.send({ status: true, data: "Moved to archive successfully" });
+    } else {
+      res.send({ status: false, data: "Interanal server error" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const sendToChatBox = async (req, res, next) => {
+  try {
+    const userArray = req.body.filter((s) => {
+      if (s.length < 25) return mongoose.Types.ObjectId(s);
+    });
+    const fileArray = req.body.filter((s) => {
+      if (s.length > 25) return s;
+    });
+    const result1 = await Users.updateMany(
+      { _id: { $in: userArray } },
+      { $set: { support: true } }
+    );
+    const result2 = await fileChattingList.updateMany(
+      { _id: { $in: fileArray } },
+      { $set: { support: true } }
+    );
+
+    if (result1 || result2) {
+      req.app.get("io").emit("sendToChatBox");
+      res.send({ status: true, data: "Moved to support successfully" });
     } else {
       res.send({ status: false, data: "Interanal server error" });
     }
@@ -251,4 +318,5 @@ module.exports = {
   sendToSupport,
   sendToSupportPerFile,
   sendToArchive,
+  sendToChatBox,
 };
