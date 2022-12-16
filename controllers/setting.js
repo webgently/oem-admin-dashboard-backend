@@ -5,17 +5,8 @@ const { Logo } = require("../models/logo");
 const { Bg } = require("../models/bg");
 
 const updateProfile = async (req, res, next) => {
-  const {
-    _id,
-    name,
-    email,
-    contact,
-    vatNumber,
-    region,
-    country,
-    city,
-    address,
-  } = req.body;
+  const { _id, name, email, phone, vatNumber, region, country, city, address } =
+    req.body;
   await Users.updateOne(
     {
       _id: _id,
@@ -23,7 +14,7 @@ const updateProfile = async (req, res, next) => {
     {
       name: name,
       email: email,
-      phone: contact,
+      phone: phone,
       vatNumber: vatNumber,
       subcontinent: region,
       country: country,
