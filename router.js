@@ -16,6 +16,7 @@ const {
   getUserData,
   updateNote,
   updatestatus,
+  updatetax,
   deleteUser,
   addCredit,
   subtractCredit,
@@ -25,9 +26,10 @@ const {
 } = require("./controllers/sign");
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.get("/getUserData", getUserData);
+router.post("/getUserData", getUserData);
 router.post("/updateNote", updateNote);
 router.post("/updatestatus", updatestatus);
+router.post("/updatetax", updatetax);
 router.post("/deleteUser", deleteUser);
 router.post("/addCredit", addCredit);
 router.post("/subtractCredit", subtractCredit);

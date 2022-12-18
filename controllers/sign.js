@@ -14,6 +14,7 @@ const signup = async (req, res, next) => {
   userData.status = "in-active";
   userData.profile = "";
   userData.support = true;
+  userData.tax = 0;
   const user = await Users.findOne({ email: userData.email });
   if (!user) {
     const newUser = new Users(userData);
@@ -190,6 +191,16 @@ const updatestatus = async (req, res, next) => {
   res.send("success");
 };
 
+const updatetax = async (req, res, next) => {
+  await Users.updateOne(
+    {
+      _id: req.body.data._id,
+    },
+    { tax: req.body.data.tax }
+  );
+  res.send("success");
+};
+
 const deleteUser = async (req, res, next) => {
   await Users.remove({ _id: req.body._id });
   res.send("success");
@@ -218,6 +229,7 @@ module.exports = {
   getUserData,
   updateNote,
   updatestatus,
+  updatetax,
   deleteUser,
   addCredit,
   subtractCredit,

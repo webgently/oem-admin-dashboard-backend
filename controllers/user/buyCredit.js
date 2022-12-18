@@ -13,7 +13,6 @@ const buyCredit = async (req, res, next) => {
       source: token.id,
     });
     const idempotency_key = uuid();
-
     const charge = await stripe.charges.create(
       {
         amount: other.netAmount * 100,

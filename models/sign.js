@@ -19,6 +19,7 @@ const usersSchema = new Schema({
   status: { type: String, require: true },
   profile: { type: String, require: true },
   support: { type: Boolean, require: true },
+  tax: { type: Number, require: true },
 });
 const Users = model("users", usersSchema);
 module.exports = { Users };
