@@ -57,7 +57,7 @@ const buyCredit = async (req, res, next) => {
               <div style="display: flex; padding-top: 2vh">
                   <div style="flex-direction: column; padding: 0 4vw;">
                       <p style="font-weight: bold">AMOUNT PAID</p>
-                      <p>€${other.netAmount}</p>
+                      <p>Kr${other.netAmount}</p>
                   </div>
                   <div style="flex-direction: column; padding: 0 4vw">
                       <p style="font-weight: bold">DATE PAID</p>
@@ -99,14 +99,14 @@ const buyCredit = async (req, res, next) => {
               <div style="padding: 0 10vw">
                 <p>
                   <span>Bought 100 Credits</span>
-                  <span style="float: right">€${Number(
+                  <span style="float: right">Kr${Number(
                     other.netAmount - other.fee
                   )}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
                   <span>Handling Fee</span>
-                  <span style="float: right">€${other.fee}</span>
+                  <span style="float: right">Kr${other.fee}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
@@ -116,7 +116,7 @@ const buyCredit = async (req, res, next) => {
                 <div style="border: 1px solid #80808075"></div>
                 <p style="font-weight: bold;">
                   <span>Amount charged</span>
-                  <span style="float: right">€${other.netAmount}</span>
+                  <span style="float: right">Kr${other.netAmount}</span>
                 </p>
               </div>
               <div style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding: 2vh 0; margin: 4vh 4vw">
@@ -137,7 +137,7 @@ const buyCredit = async (req, res, next) => {
               <div style="display: flex; padding-top: 2vh">
                   <div style="flex-direction: column; padding: 0 4vw;">
                       <p style="font-weight: bold">AMOUNT PAID</p>
-                      <p>€${other.netAmount}</p>
+                      <p>Kr${other.netAmount}</p>
                   </div>
                   <div style="flex-direction: column; padding: 0 4vw">
                       <p style="font-weight: bold">DATE PAID</p>
@@ -179,14 +179,14 @@ const buyCredit = async (req, res, next) => {
               <div style="padding: 0 10vw">
                 <p>
                   <span>Bought 100 Credits</span>
-                  <span style="float: right">€${Number(
+                  <span style="float: right">Kr${Number(
                     other.netAmount - other.fee
                   )}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
                   <span>Handling Fee</span>
-                  <span style="float: right">€${other.fee}</span>
+                  <span style="float: right">Kr${other.fee}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
@@ -196,7 +196,7 @@ const buyCredit = async (req, res, next) => {
                 <div style="border: 1px solid #80808075"></div>
                 <p style="font-weight: bold;">
                   <span>Amount charged</span>
-                  <span style="float: right">€${other.netAmount}</span>
+                  <span style="float: right">Kr${other.netAmount}</span>
                 </p>
               </div>
               <div style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding: 2vh 0; margin: 4vh 4vw">
@@ -214,7 +214,7 @@ const buyCredit = async (req, res, next) => {
           to: process.env.SUPPORT_EMAIL,
           from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
           subject: `Received Payment`,
-          text: `Received €${other.netAmount} of payment receipt(${other.receipt}) from ${account.name}`,
+          text: `Received Kr${other.netAmount} of payment receipt(${other.receipt}) from ${account.name}`,
           html: adminMail,
         };
         const userMsg = {
