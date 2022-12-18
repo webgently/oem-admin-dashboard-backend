@@ -110,7 +110,7 @@ const buyCredit = async (req, res, next) => {
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
-                  <span>25% VAT Charges</span>
+                  <span>${other.tax}% VAT Charges</span>
                   <span style="float: right">${other.vatCharge}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
@@ -190,7 +190,7 @@ const buyCredit = async (req, res, next) => {
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
-                  <span>25% VAT Charges</span>
+                  <span>${other.tax}% VAT Charges</span>
                   <span style="float: right">${other.vatCharge}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
