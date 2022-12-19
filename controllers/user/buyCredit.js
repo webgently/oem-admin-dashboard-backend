@@ -98,9 +98,9 @@ const buyCredit = async (req, res, next) => {
               <h4 style="padding: 0 4vw">SUMMARY</h4>
               <div style="padding: 0 10vw">
                 <p>
-                  <span>Bought 100 Credits</span>
+                  <span>Bought ${other.credits} Credits</span>
                   <span style="float: right">Kr${Number(
-                    other.netAmount - other.fee
+                    other.netAmount - other.fee - other.vatCharge
                   )}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
@@ -178,10 +178,11 @@ const buyCredit = async (req, res, next) => {
               <h4 style="padding: 0 4vw">SUMMARY</h4>
               <div style="padding: 0 10vw">
                 <p>
-                  <span>Bought 100 Credits</span>
+                  <span>Bought ${other.credits} Credits</span>
                   <span style="float: right">Kr${Number(
-                    other.netAmount - other.fee
+                    other.netAmount - other.fee - other.vatCharge
                   )}</span>
+                </p>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
