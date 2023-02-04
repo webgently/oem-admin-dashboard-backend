@@ -1,9 +1,14 @@
 const { Users } = require("../models/sign");
 const { Forgot } = require("../models/forgot");
-const { v4: uuid } = require("uuid");
-const sgMail = require("@sendgrid/mail");
+const { v4: uuid } = require("uuid"); 
+const Mailjet = require('node-mailjet');
+// const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const mailjet = Mailjet.apiConnect(
+  process.env.MJ_APIKEY_PUBLIC,
+  process.env.MJ_APIKEY_PRIVATE,
+);
 
 const signup = async (req, res, next) => {
   let userData = req.body.data;
@@ -93,23 +98,49 @@ const forgotPassword = async (req, res, next) => {
                 </div>
             </div>
         </div>`;
-        const userMsg = {
-          to: data.email,
-          from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
-          subject: "Reset Password",
-          text: `Reset Password(${data.link})`,
-          html: userMail,
-        };
-
-        sgMail.send(userMsg).then(
-          () => {},
-          (error) => {
-            console.error(error);
-            if (error.response) {
-              console.error(error.response.body);
+        const userSetting = mailjet
+        .post('send', { version: 'v3.1' })
+        .request({
+          Messages: [
+            {
+              From: {
+                Email: process.env.EMAIL_DOMAIN,
+                Name: process.env.SUPPORT_NAME
+              },
+              To: [
+                {
+                  Email: data.email,
+                  Name: ""
+                }
+              ],
+              Subject: "Reset Password",
+              TextPart: `Reset Password(${data.link})`,
+              HTMLPart: userMail,
             }
-          }
-        );
+          ]
+        })
+        userSetting.then((result) => {
+          console.log(result.body)
+        })
+        .catch((err) => {
+          console.log(err.statusCode)
+        })
+        // const userMsg = {
+        //   to: data.email,
+        //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
+        //   subject: "Reset Password",
+        //   text: `Reset Password(${data.link})`,
+        //   html: userMail,
+        // };
+        // sgMail.send(userMsg).then(
+        //   () => {},
+        //   (error) => {
+        //     console.error(error);
+        //     if (error.response) {
+        //       console.error(error.response.body);
+        //     }
+        //   }
+        // );
         res.send({ status: true, data: result });
       } else {
         res.send({ status: false, data: "Interanal server error" });

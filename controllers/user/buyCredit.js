@@ -1,10 +1,10 @@
 const { Invoice } = require("../../models/user/invoice");
 const { Users } = require("../../models/sign");
 const { v4: uuid } = require("uuid");
-const stripe = require("stripe")(process.env.STRIPE_PUBLIC_KEY);
-const sgMail = require("@sendgrid/mail");
 const Mailjet = require('node-mailjet');
+// const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
+const stripe = require("stripe")(process.env.STRIPE_PUBLIC_KEY);
 // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const mailjet = Mailjet.apiConnect(
   process.env.MJ_APIKEY_PUBLIC,
@@ -227,7 +227,7 @@ const buyCredit = async (req, res, next) => {
             {
               From: {
                 Email: process.env.EMAIL_DOMAIN,
-                Name: process.env.SUPPORT_NAME
+                Name: "OEMSERVICE"
               },
               To: [
                 {

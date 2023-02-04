@@ -1,7 +1,12 @@
 const { Upload } = require("../../models/user/uploadFile");
-const sgMail = require("@sendgrid/mail");
+const Mailjet = require('node-mailjet');
+// const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const mailjet = Mailjet.apiConnect(
+  process.env.MJ_APIKEY_PUBLIC,
+  process.env.MJ_APIKEY_PRIVATE,
+);
 
 const uploadFileDataSave = async (req, res, next) => {
   try {
@@ -12,6 +17,7 @@ const uploadFileDataSave = async (req, res, next) => {
     else data.orderId = exist.length + 1;
     const upload = new Upload(data);
     const result = await upload.save();
+
     const adminMail = `
       <div style="padding: 10vh 14vw;">
         <div style="text-align: center;">
@@ -50,39 +56,95 @@ const uploadFileDataSave = async (req, res, next) => {
         <p>Stage 1 and most common DPF/EGR off files have an average delivery time of 20 minutes. For stages 2 and 3 and special
           DPF/EGR off files the estimated delivery time differs per file.</p>
       </div>`;
+    
     if (result) {
-      const adminMsg = {
-        to: process.env.SUPPORT_EMAIL,
-        from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
-        subject: `Received file(${data.orderId}) from: ${data.client}`,
-        text: `Received ${data.orderId} from: ${data.client}`,
-        html: adminMail,
-      };
-      const userMsg = {
-        to: data.email,
-        from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
-        subject: "File Upload!",
-        text: `File(${data.orderId}) Uploading!`,
-        html: userMail,
-      };
-      sgMail.send(adminMsg).then(
-        () => {},
-        (error) => {
-          console.error(error);
-          if (error.response) {
-            console.error(error.response.body);
+      const adminSetting = mailjet
+      .post('send', { version: 'v3.1' })
+      .request({
+        Messages: [
+          {
+            From: {
+              Email: process.env.EMAIL_DOMAIN,
+              Name: "OEMSERVICE"
+            },
+            To: [
+              {
+                Email: process.env.SUPPORT_EMAIL,
+                Name: data.client
+              }
+            ],
+            Subject: `Received file(${data.orderId}) from: ${data.client}`,
+            TextPart: `Received ${data.orderId} from: ${data.client}`,
+            HTMLPart: adminMail,
           }
-        }
-      );
-      sgMail.send(userMsg).then(
-        () => {},
-        (error) => {
-          console.error(error);
-          if (error.response) {
-            console.error(error.response.body);
+        ]
+      })
+      const userSetting = mailjet
+      .post('send', { version: 'v3.1' })
+      .request({
+        Messages: [
+          {
+            From: {
+              Email: process.env.EMAIL_DOMAIN,
+              Name: process.env.SUPPORT_NAME
+            },
+            To: [
+              {
+                Email: data.email,
+                Name: data.client
+              }
+            ],
+            Subject: "File Upload!",
+            TextPart: `File(${data.orderId}) Uploading!`,
+            HTMLPart: userMail,
           }
-        }
-      );
+        ]
+      })
+      
+      adminSetting.then((result) => {
+        console.log(result.body)
+      })
+      .catch((err) => {
+        console.log(err.statusCode)
+      })
+      userSetting.then((result) => {
+        console.log(result.body)
+      })
+      .catch((err) => {
+        console.log(err.statusCode)
+      })
+      // const adminMsg = {
+      //   to: process.env.SUPPORT_EMAIL,
+      //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
+      //   subject: `Received file(${data.orderId}) from: ${data.client}`,
+      //   text: `Received ${data.orderId} from: ${data.client}`,
+      //   html: adminMail,
+      // };
+      // const userMsg = {
+      //   to: data.email,
+      //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
+      //   subject: "File Upload!",
+      //   text: `File(${data.orderId}) Uploading!`,
+      //   html: userMail,
+      // };
+      // sgMail.send(adminMsg).then(
+      //   () => {},
+      //   (error) => {
+      //     console.error(error);
+      //     if (error.response) {
+      //       console.error(error.response.body);
+      //     }
+      //   }
+      // );
+      // sgMail.send(userMsg).then(
+      //   () => {},
+      //   (error) => {
+      //     console.error(error);
+      //     if (error.response) {
+      //       console.error(error.response.body);
+      //     }
+      //   }
+      // );
       res.send({ status: true, data: "Saved successfully" });
     } else {
       res.send({ status: false, data: "Interanal server error" });

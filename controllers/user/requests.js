@@ -1,9 +1,14 @@
 const { Upload } = require("../../models/user/uploadFile");
 const { CreditHistory } = require("../../models/user/creditHistory");
 const { Users } = require("../../models/sign");
-const sgMail = require("@sendgrid/mail");
+const Mailjet = require('node-mailjet');
+// const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const mailjet = Mailjet.apiConnect(
+  process.env.MJ_APIKEY_PUBLIC,
+  process.env.MJ_APIKEY_PRIVATE,
+);
 
 const getRequests = async (req, res, next) => {
   try {
@@ -124,22 +129,49 @@ const uploadUploadDataSave = async (req, res, next) => {
         <p>Do you want free credits?
         Send us your dyno result , your video of test driving, pop&bangs or other cool stuff related to our file service!</p>
       </div>`;
-    const userMsg = {
-      to: user.email,
-      from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
-      subject: "File Ready!",
-      text: `File(${data.orderId}) Uploading!`,
-      html: userMail,
-    };
-    sgMail.send(userMsg).then(
-      () => {},
-      (error) => {
-        console.error(error);
-        if (error.response) {
-          console.error(error.response.body);
+    const userSetting = mailjet
+    .post('send', { version: 'v3.1' })
+    .request({
+      Messages: [
+        {
+          From: {
+            Email: process.env.EMAIL_DOMAIN,
+            Name: process.env.SUPPORT_NAME
+          },
+          To: [
+            {
+              Email: user.email,
+              Name: user.name
+            }
+          ],
+          Subject: "File Ready!",
+          TextPart: `File(${data.orderId}) Uploading!`,
+          HTMLPart: userMail,
         }
-      }
-    );
+      ]
+    })
+    userSetting.then((result) => {
+      console.log(result.body)
+    })
+    .catch((err) => {
+      console.log(err.statusCode)
+    })
+    // const userMsg = {
+    //   to: user.email,
+    //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
+    //   subject: "File Ready!",
+    //   text: `File(${data.orderId}) Uploading!`,
+    //   html: userMail,
+    // };
+    // sgMail.send(userMsg).then(
+    //   () => {},
+    //   (error) => {
+    //     console.error(error);
+    //     if (error.response) {
+    //       console.error(error.response.body);
+    //     }
+    //   }
+    // );
     res.send({ status: true, data: "Uploaded successfully" });
   } catch (error) {
     console.log(error);
@@ -183,22 +215,49 @@ const uploadStatusSave = async (req, res, next) => {
           <p>• The file is not original / already modified (always attach original together with what you upload)</p>
           <p>• We do not offer the service requested</p>
         </div>`;
-      const userMsg = {
-        to: user.email,
-        from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
-        subject: "File Cancelled!",
-        text: `File(${data.orderId}) Cancelled!`,
-        html: userMail,
-      };
-      sgMail.send(userMsg).then(
-        () => {},
-        (error) => {
-          console.error(error);
-          if (error.response) {
-            console.error(error.response.body);
+      const userSetting = mailjet
+      .post('send', { version: 'v3.1' })
+      .request({
+        Messages: [
+          {
+            From: {
+              Email: process.env.EMAIL_DOMAIN,
+              Name: process.env.SUPPORT_NAME
+            },
+            To: [
+              {
+                Email: user.email,
+                Name: user.name
+              }
+            ],
+            Subject: "File Cancelled!",
+            TextPart: `File(${data.orderId}) Cancelled!`,
+            HTMLPart: userMail,
           }
-        }
-      );
+        ]
+      })
+      userSetting.then((result) => {
+        console.log(result.body)
+      })
+      .catch((err) => {
+        console.log(err.statusCode)
+      })
+      // const userMsg = {
+      //   to: user.email,
+      //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
+      //   subject: "File Cancelled!",
+      //   text: `File(${data.orderId}) Cancelled!`,
+      //   html: userMail,
+      // };
+      // sgMail.send(userMsg).then(
+      //   () => {},
+      //   (error) => {
+      //     console.error(error);
+      //     if (error.response) {
+      //       console.error(error.response.body);
+      //     }
+      //   }
+      // );
     }
     await Upload.updateOne(
       { _id: data.id },
