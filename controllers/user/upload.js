@@ -53,14 +53,14 @@ const uploadFileDataSave = async (req, res, next) => {
     if (result) {
       const adminMsg = {
         to: process.env.SUPPORT_EMAIL,
-        from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
+        from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
         subject: `Received file(${data.orderId}) from: ${data.client}`,
         text: `Received ${data.orderId} from: ${data.client}`,
         html: adminMail,
       };
       const userMsg = {
         to: data.email,
-        from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
+        from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
         subject: "File Upload!",
         text: `File(${data.orderId}) Uploading!`,
         html: userMail,

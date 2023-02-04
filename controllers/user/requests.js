@@ -126,7 +126,7 @@ const uploadUploadDataSave = async (req, res, next) => {
       </div>`;
     const userMsg = {
       to: user.email,
-      from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
+      from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
       subject: "File Ready!",
       text: `File(${data.orderId}) Uploading!`,
       html: userMail,
@@ -185,7 +185,7 @@ const uploadStatusSave = async (req, res, next) => {
         </div>`;
       const userMsg = {
         to: user.email,
-        from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
+        from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
         subject: "File Cancelled!",
         text: `File(${data.orderId}) Cancelled!`,
         html: userMail,

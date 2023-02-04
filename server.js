@@ -35,6 +35,7 @@ const io = require("socket.io")(http, {
 });
 socket(io);
 app.set("io", io);
+
 http.listen(port, () => {
   console.log("server listening on:", port);
 });

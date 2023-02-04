@@ -3,8 +3,14 @@ const { Users } = require("../../models/sign");
 const { v4: uuid } = require("uuid");
 const stripe = require("stripe")(process.env.STRIPE_PUBLIC_KEY);
 const sgMail = require("@sendgrid/mail");
+const Mailjet = require('node-mailjet');
 require("dotenv").config();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const mailjet = Mailjet.apiConnect(
+  process.env.MJ_APIKEY_PUBLIC,
+  process.env.MJ_APIKEY_PRIVATE,
+);
+
 const buyCredit = async (req, res, next) => {
   try {
     const { token, other, account } = req.body.data;
@@ -35,6 +41,7 @@ const buyCredit = async (req, res, next) => {
         idempotencyKey: idempotency_key,
       }
     );
+
     if (charge.status === "succeeded") {
       const exist = await Invoice.find({});
       other.receipt = exist.length + 1;
@@ -49,6 +56,7 @@ const buyCredit = async (req, res, next) => {
         },
         { credit: sumCredit }
       );
+      
       const userMail = `
         <div style="display: flex; justify-content: center">
           <div style="padding: 10vh 14vw;">
@@ -210,41 +218,97 @@ const buyCredit = async (req, res, next) => {
             <p style="text-align: center;">You're receiving this email because you made a purchase at OEMSERVICE</p>
           </div>
         </div>`;
+      
       if (result1 && result2) {
-        const adminMsg = {
-          to: process.env.SUPPORT_EMAIL,
-          from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
-          subject: `Received Payment`,
-          text: `Received Kr${other.netAmount} of payment receipt(${other.receipt}) from ${account.name}`,
-          html: adminMail,
-        };
-        const userMsg = {
-          to: other.email,
-          from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
-          subject: `Payment Receipt`,
-          text: `Payment Receipt(${other.receipt})`,
-          html: userMail,
-        };
-        sgMail.send(adminMsg).then(
-          () => {},
-          (error) => {
-            console.error(error);
-
-            if (error.response) {
-              console.error(error.response.body);
+        const adminSetting = mailjet
+        .post('send', { version: 'v3.1' })
+        .request({
+          Messages: [
+            {
+              From: {
+                Email: process.env.EMAIL_DOMAIN,
+                Name: process.env.SUPPORT_NAME
+              },
+              To: [
+                {
+                  Email: process.env.SUPPORT_EMAIL,
+                  Name: account.name
+                }
+              ],
+              Subject: `Received Payment`,
+              TextPart: `Received Kr${other.netAmount} of payment receipt(${other.receipt}) from ${account.name}`,
+              HTMLPart: adminMail,
             }
-          }
-        );
-        sgMail.send(userMsg).then(
-          () => {},
-          (error) => {
-            console.error(error);
-
-            if (error.response) {
-              console.error(error.response.body);
+          ]
+        })
+        const userSetting = mailjet
+        .post('send', { version: 'v3.1' })
+        .request({
+          Messages: [
+            {
+              From: {
+                Email: process.env.EMAIL_DOMAIN,
+                Name: process.env.SUPPORT_NAME
+              },
+              To: [
+                {
+                  Email: other.email,
+                  Name: account.name
+                }
+              ],
+              Subject: `Payment Receipt`,
+              TextPart: `Payment Receipt(${other.receipt})`,
+              HTMLPart: userMail,
             }
-          }
-        );
+          ]
+        })
+        adminSetting.then((result) => {
+          console.log(result.body)
+        })
+        .catch((err) => {
+          console.log(err.statusCode)
+        })
+        userSetting.then((result) => {
+          console.log(result.body)
+        })
+        .catch((err) => {
+          console.log(err.statusCode)
+        })
+
+        // const adminMsg = {
+        //   to: process.env.SUPPORT_EMAIL,
+        //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
+        //   subject: `Received Payment`,
+        //   text: `Received Kr${other.netAmount} of payment receipt(${other.receipt}) from ${account.name}`,
+        //   html: adminMail,
+        // };
+        // const userMsg = {
+        //   to: other.email,
+        //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
+        //   subject: `Payment Receipt`,
+        //   text: `Payment Receipt(${other.receipt})`,
+        //   html: userMail,
+        // };
+        // sgMail.send(adminMsg).then(
+        //   () => {},
+        //   (error) => {
+        //     console.error(error);
+
+        //     if (error.response) {
+        //       console.error(error.response.body);
+        //     }
+        //   }
+        // );
+        // sgMail.send(userMsg).then(
+        //   () => {},
+        //   (error) => {
+        //     console.error(error);
+
+        //     if (error.response) {
+        //       console.error(error.response.body);
+        //     }
+        //   }
+        // );
         req.app.get("io").emit("creditCheck" + other.userId);
         res.send({ stauts: true });
       } else {

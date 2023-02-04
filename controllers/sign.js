@@ -95,7 +95,7 @@ const forgotPassword = async (req, res, next) => {
         </div>`;
         const userMsg = {
           to: data.email,
-          from: process.env.SENDGRID_DOMAIN, // Use the email address or domain you verified above
+          from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
           subject: "Reset Password",
           text: `Reset Password(${data.link})`,
           html: userMail,
