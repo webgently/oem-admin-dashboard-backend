@@ -12,7 +12,7 @@ const mailjet = Mailjet.apiConnect(
 
 const getRequests = async (req, res, next) => {
   try {
-    const data = await Upload.find({});
+    const data = await Upload.find({}).sort({ "orderId": -1 });
     if (data) {
       res.send({ status: true, data });
     } else {
