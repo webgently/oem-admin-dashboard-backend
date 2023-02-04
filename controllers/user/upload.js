@@ -1,12 +1,12 @@
 const { Upload } = require("../../models/user/uploadFile");
 const Mailjet = require('node-mailjet');
-// const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const mailjet = Mailjet.apiConnect(
   process.env.MJ_APIKEY_PUBLIC,
   process.env.MJ_APIKEY_PRIVATE,
 );
+// const sgMail = require("@sendgrid/mail");
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const uploadFileDataSave = async (req, res, next) => {
   try {
@@ -86,7 +86,7 @@ const uploadFileDataSave = async (req, res, next) => {
           {
             From: {
               Email: process.env.EMAIL_DOMAIN,
-              Name: process.env.SUPPORT_NAME
+              Name: `${process.env.SUPPORT_NAME} of OEMSERVICE`
             },
             To: [
               {

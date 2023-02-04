@@ -2,14 +2,14 @@ const { Invoice } = require("../../models/user/invoice");
 const { Users } = require("../../models/sign");
 const { v4: uuid } = require("uuid");
 const Mailjet = require('node-mailjet');
-// const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
+// const sgMail = require("@sendgrid/mail");
 const stripe = require("stripe")(process.env.STRIPE_PUBLIC_KEY);
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const mailjet = Mailjet.apiConnect(
   process.env.MJ_APIKEY_PUBLIC,
   process.env.MJ_APIKEY_PRIVATE,
 );
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const buyCredit = async (req, res, next) => {
   try {
@@ -262,6 +262,7 @@ const buyCredit = async (req, res, next) => {
             }
           ]
         })
+
         adminSetting.then((result) => {
           console.log(result.body)
         })
@@ -274,7 +275,6 @@ const buyCredit = async (req, res, next) => {
         .catch((err) => {
           console.log(err.statusCode)
         })
-
         // const adminMsg = {
         //   to: process.env.SUPPORT_EMAIL,
         //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
@@ -293,7 +293,6 @@ const buyCredit = async (req, res, next) => {
         //   () => {},
         //   (error) => {
         //     console.error(error);
-
         //     if (error.response) {
         //       console.error(error.response.body);
         //     }
@@ -303,7 +302,6 @@ const buyCredit = async (req, res, next) => {
         //   () => {},
         //   (error) => {
         //     console.error(error);
-
         //     if (error.response) {
         //       console.error(error.response.body);
         //     }

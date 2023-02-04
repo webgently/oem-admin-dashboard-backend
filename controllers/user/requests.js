@@ -136,7 +136,7 @@ const uploadUploadDataSave = async (req, res, next) => {
         {
           From: {
             Email: process.env.EMAIL_DOMAIN,
-            Name: process.env.SUPPORT_NAME
+            Name: `${process.env.SUPPORT_NAME} of OEMSERVICE`
           },
           To: [
             {
@@ -222,7 +222,7 @@ const uploadStatusSave = async (req, res, next) => {
           {
             From: {
               Email: process.env.EMAIL_DOMAIN,
-              Name: process.env.SUPPORT_NAME
+              Name: `${process.env.SUPPORT_NAME} of OEMSERVICE`
             },
             To: [
               {
