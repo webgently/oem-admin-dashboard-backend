@@ -6,7 +6,7 @@ const getDataByOrderID = async (req, res, next) => {
     const data = await Upload.find({
       orderId: req.body.order,
       userId: req.body.id,
-    });
+    }).sort({ "_id": -1 });
     if (data) {
       res.send({ status: true, data });
     } else {
@@ -23,12 +23,12 @@ const getDataByFilter = async (req, res, next) => {
     if (req.body.filter === "all") {
       data = await Upload.find({
         userId: req.body.id,
-      });
+      }).sort({ "_id": -1 });
     } else {
       data = await Upload.find({
         status: req.body.filter,
         userId: req.body.id,
-      });
+      }).sort({ "_id": -1 });
     }
     const unreadCount = {};
     await data.forEach(async (element) => {
