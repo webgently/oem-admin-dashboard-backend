@@ -123,7 +123,7 @@ const uploadUploadDataSave = async (req, res, next) => {
         </div>
         <div style="padding-top: 4vh;">
           <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
-            <a href="${process.env.SITE_DOMAIN}/overview" style=" color: white; text-decoration: none;">GO TO CUSTOMER PORTAL</a>
+            <a href="${process.env.SITE_DOMAIN}/overview" style="color: white; text-decoration: none;">GO TO CUSTOMER PORTAL</a>
           </button>
         </div>
         <p>Do you want free credits?
@@ -205,7 +205,7 @@ const uploadStatusSave = async (req, res, next) => {
           </div>
           <div style="padding-top: 4vh;">
             <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
-              <a href="${process.env.SITE_DOMAIN}/overview" style=" color: white; text-decoration: none;">GO TO CUSTOMER PORTAL</a>
+              <a href="${process.env.SITE_DOMAIN}/overview" style="color: white; text-decoration: none;">GO TO CUSTOMER PORTAL</a>
             </button>
           </div>
           <p style="font-weight: bold; padding-top: 1vh;">F.A.Q</p>

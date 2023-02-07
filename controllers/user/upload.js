@@ -53,7 +53,7 @@ const uploadFileDataSave = async (req, res, next) => {
         <p style="font-size: 16px;">${data.message}</p>
         <div style="padding-top: 4vh;">
           <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
-            <a href="${process.env.SITE_DOMAIN}/admin_upload" style=" color: white; text-decoration: none;">GO TO CUSTOMERPORTAL</a>
+            <a href="${process.env.SITE_DOMAIN}/admin_upload" style="color: white; text-decoration: none;">GO TO CUSTOMERPORTAL</a>
           </button>
         </div>
       </div>`;
