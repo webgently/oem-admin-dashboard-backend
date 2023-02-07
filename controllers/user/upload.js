@@ -1,5 +1,6 @@
 const { Upload } = require("../../models/user/uploadFile");
 const Mailjet = require('node-mailjet');
+const { set } = require("core-js/core/dict");
 require("dotenv").config();
 const mailjet = Mailjet.apiConnect(
   process.env.MJ_APIKEY_PUBLIC,
@@ -108,12 +109,14 @@ const uploadFileDataSave = async (req, res, next) => {
       .catch((err) => {
         console.log(err.statusCode)
       })
-      userSetting.then((result) => {
-        console.log(result.body)
-      })
-      .catch((err) => {
-        console.log(err.statusCode)
-      })
+      setTimeout(() => { 
+        userSetting.then((result) => {
+          console.log(result.body)
+        })
+        .catch((err) => {
+          console.log(err.statusCode)
+        })
+      }, 3000)
       // const adminMsg = {
       //   to: process.env.SUPPORT_EMAIL,
       //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
