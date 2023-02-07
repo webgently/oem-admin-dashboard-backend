@@ -18,19 +18,7 @@ const uploadFileDataSave = async (req, res, next) => {
     const upload = new Upload(data);
     const result = await upload.save();
 
-    const adminMail = `
-      <div style="padding: 10vh 14vw;">
-        <div style="text-align: center;">
-          <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
-        </div>
-        <h1 style="text-align: center; padding-top: 1vh">Received file(${data.orderId}) from ${data.client}</h1>
-        <p style="font-size: 16px;">${data.message}</p>
-        <div style="padding-top: 4vh;">
-          <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
-            <a href="${process.env.SITE_DOMAIN}/admin_upload" style=" color: white; text-decoration: none;">GO TO CUSTOMERPORTAL</a>
-          </button>
-        </div>
-      </div>`;
+    
     const userMail = `
       <div style="padding: 10vh 14vw;">
         <div style="text-align: center;">
@@ -55,6 +43,19 @@ const uploadFileDataSave = async (req, res, next) => {
           </div>
         <p>Stage 1 and most common DPF/EGR off files have an average delivery time of 20 minutes. For stages 2 and 3 and special
           DPF/EGR off files the estimated delivery time differs per file.</p>
+      </div>`;
+    const adminMail = `
+      <div style="padding: 10vh 14vw;">
+        <div style="text-align: center;">
+          <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
+        </div>
+        <h1 style="text-align: center; padding-top: 1vh">Received file(${data.orderId}) from ${data.client}</h1>
+        <p style="font-size: 16px;">${data.message}</p>
+        <div style="padding-top: 4vh;">
+          <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
+            <a href="${process.env.SITE_DOMAIN}/admin_upload" style=" color: white; text-decoration: none;">GO TO CUSTOMERPORTAL</a>
+          </button>
+        </div>
       </div>`;
     
     if (result) {

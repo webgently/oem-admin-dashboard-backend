@@ -265,14 +265,12 @@ const buyCredit = async (req, res, next) => {
 
         adminSetting.then((result) => {
           console.log(result.body)
-        })
-        .catch((err) => {
+        }).catch((err) => {
           console.log(err.statusCode)
         })
         userSetting.then((result) => {
           console.log(result.body)
-        })
-        .catch((err) => {
+        }).catch((err) => {
           console.log(err.statusCode)
         })
         // const adminMsg = {
