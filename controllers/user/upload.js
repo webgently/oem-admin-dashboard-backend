@@ -101,20 +101,22 @@ const uploadFileDataSave = async (req, res, next) => {
           }
         ]
       })
-      
-      adminSetting.then((result) => {
-        console.log(result.body)
-      })
-      .catch((err) => {
-        console.log(err.statusCode)
-      })
-      await sleep(3000);
+     
       userSetting.then((result) => {
         console.log(result.body)
       })
       .catch((err) => {
         console.log(err.statusCode)
       })
+      setTimeout(() => { 
+        adminSetting.then((result) => {
+          console.log(result.body)
+        })
+      }, 5000)
+      .catch((err) => {
+        console.log(err.statusCode)
+      })
+
       // const adminMsg = {
       //   to: process.env.SUPPORT_EMAIL,
       //   from: process.env.EMAIL_DOMAIN, // Use the email address or domain you verified above
