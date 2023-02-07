@@ -108,11 +108,9 @@ const uploadFileDataSave = async (req, res, next) => {
       .catch((err) => {
         console.log(err.statusCode)
       })
-      setTimeout(() => { 
-        adminSetting.then((result) => {
-          console.log(result.body)
-        })
-      }, 5000)
+      adminSetting.then((result) => {
+        console.log(result.body)
+      })
       .catch((err) => {
         console.log(err.statusCode)
       })
