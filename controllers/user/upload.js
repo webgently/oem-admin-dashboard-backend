@@ -46,9 +46,6 @@ const uploadFileDataSave = async (req, res, next) => {
       </div>`;
     const adminMail = `
       <div style="padding: 10vh 14vw;">
-        <div style="text-align: center;">
-          <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
-        </div>
         <h1 style="text-align: center; padding-top: 1vh">Received file(${data.orderId}) from ${data.client}</h1>
         <p style="font-size: 16px;">${data.message}</p>
         <div style="padding-top: 4vh;">
