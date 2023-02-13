@@ -27,6 +27,54 @@ const signup = async (req, res, next) => {
     if (!result) {
       return res.json({ status: false, data: "Interanal server error" });
     } else {
+      const userMail = `
+        <div style="display: flex; justify-content: center">
+          <div style="padding: 10vh 14vw;">
+            <div style="text-align: left;">
+              <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
+            </div>
+            <div style="font-size: 18px; text-align: left; padding-top: 40px;">
+              <p>Dear ${result.name}, thank you for creating an account.</p> 
+              <p style="padding-top: 20px;">We manually approve all accounts, so there is a certain delay before you can login to your account</p>
+              <p style="padding-top: 20px;">Do you have questions about your account? </p>
+              <p>Contact us directly at ${process.env.SUPPORT_EMAIL}</p>
+            </div>
+            <div style="padding-top: 4vh; text-align: left;">
+              <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
+                <a href="${process.env.SITE_DOMAIN}" style="color: white; text-decoration: none;">GO TO PORTAL NOW</a>
+              </button>
+            </div>
+            <p style="padding-top: 20px;">Did you know 1 hk is = 0,73549875 kW?</p>
+          </div>
+        </div>`;
+      const userSetting = mailjet
+      .post('send', { version: 'v3.1' })
+      .request({
+        Messages: [
+          {
+            From: {
+              Email: process.env.EMAIL_DOMAIN,
+              Name: `${process.env.SUPPORT_NAME} of OEMSERVICE`
+            },
+            To: [
+              {
+                Email: data.email,
+                Name: ""
+              }
+            ],
+            Subject: "Created Your OEMService Account",
+            TextPart: `Created Your OEMService Account`,
+            HTMLPart: userMail,
+          }
+        ]
+      })
+      userSetting.then((result) => {
+        console.log(result.body)
+      })
+      .catch((err) => {
+        console.log(err.statusCode)
+      })
+
       return res.json({ status: true, data: result });
     }
   } else {

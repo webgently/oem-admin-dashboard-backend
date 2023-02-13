@@ -29,7 +29,7 @@ const deleteCredit = async (req, res, next) => {
 };
 
 const getAllCredit = async (req, res, next) => {
-  const result = await Credits.find({});
+  const result = await Credits.find({}).sort({ "credit": 1 }).collation({locale: "en_US", numericOrdering: true});
   res.send(result);
 };
 
