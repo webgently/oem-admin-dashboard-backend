@@ -58,7 +58,7 @@ const signup = async (req, res, next) => {
             },
             To: [
               {
-                Email: data.email,
+                Email: result.email,
                 Name: ""
               }
             ],
