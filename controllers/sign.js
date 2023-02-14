@@ -30,7 +30,8 @@ const signup = async (req, res, next) => {
       const userMail = `
         <div style="display: flex; justify-content: center">
           <div style="padding: 10vh 14vw;">
-            <div style="text-align: left;">
+            <h1>Oemservice – Your account is created</h1>
+            <div style="text-align: left; padding-top: 40px;">
               <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
             </div>
             <div style="font-size: 18px; text-align: left; padding-top: 40px;">
@@ -54,7 +55,7 @@ const signup = async (req, res, next) => {
           {
             From: {
               Email: process.env.EMAIL_DOMAIN,
-              Name: `${process.env.SUPPORT_NAME} of OEMSERVICE`
+              Name: `OEMSERVICE`
             },
             To: [
               {
@@ -153,7 +154,7 @@ const forgotPassword = async (req, res, next) => {
             {
               From: {
                 Email: process.env.EMAIL_DOMAIN,
-                Name: `${process.env.SUPPORT_NAME} of OEMSERVICE`
+                Name: `OEMSERVICE`
               },
               To: [
                 {
