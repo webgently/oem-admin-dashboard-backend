@@ -93,7 +93,7 @@ const signin = async (req, res, next) => {
       } else {
         res.send({
           login: false,
-          data: "You have to receive allow from admin",
+          data: "Please wait for your account to be activated",
         });
       }
     } else {
