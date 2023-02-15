@@ -248,7 +248,7 @@ const buyCredit = async (req, res, next) => {
             {
               From: {
                 Email: process.env.EMAIL_DOMAIN,
-                Name: ''
+                Name: 'OEMSERVICE'
               },
               To: [
                 {
