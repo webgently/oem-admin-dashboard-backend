@@ -22,7 +22,7 @@ const buyCredit = async (req, res, next) => {
     const charge = await stripe.charges.create(
       {
         amount: other.netAmount * 100,
-        currency: "eur",
+        currency: "SEK",
         customer: customer.id,
         receipt_email: token.email,
         description: `From OEMSERVICE`,
