@@ -63,8 +63,8 @@ const signup = async (req, res, next) => {
                 Name: ""
               }
             ],
-            Subject: "Created Your OEMService Account",
-            TextPart: `Created Your OEMService Account`,
+            Subject: "Oemservice – Your account is created",
+            TextPart: `Oemservice – Your account is created`,
             HTMLPart: userMail,
           }
         ]

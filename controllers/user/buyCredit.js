@@ -248,7 +248,7 @@ const buyCredit = async (req, res, next) => {
             {
               From: {
                 Email: process.env.EMAIL_DOMAIN,
-                Name: process.env.SUPPORT_NAME
+                Name: ''
               },
               To: [
                 {
