@@ -60,7 +60,7 @@ const buyCredit = async (req, res, next) => {
       const userMail = `
         <div style="display: flex; justify-content: center">
           <div style="padding: 10vh 14vw;">
-              <div style="text-align: left;">
+              <div style="text-align: center;">
                 <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
               </div>
               <h2 style="text-align: center; padding-top: 40px;">Receipt from OEM Automotive Svenska AB</h2>
