@@ -65,7 +65,7 @@ const buyCredit = async (req, res, next) => {
               <div style="display: flex; padding-top: 2vh">
                   <div style="flex-direction: column; padding: 0 4vw;">
                       <p style="font-weight: bold">AMOUNT PAID</p>
-                      <p>Kr${other.netAmoun.toFixed(2)}</p>
+                      <p>Kr${other.netAmount.toFixed(2)}</p>
                   </div>
                   <div style="flex-direction: column; padding: 0 4vw">
                       <p style="font-weight: bold">DATE PAID</p>
