@@ -65,7 +65,7 @@ const buyCredit = async (req, res, next) => {
               <div style="display: flex; padding-top: 2vh">
                   <div style="flex-direction: column; padding: 0 4vw;">
                       <p style="font-weight: bold">AMOUNT PAID</p>
-                      <p>Kr${other.netAmount.toFixed(2)}</p>
+                      <p>${Number(other.netAmount).toFixed(2)}</p>
                   </div>
                   <div style="flex-direction: column; padding: 0 4vw">
                       <p style="font-weight: bold">DATE PAID</p>
@@ -103,22 +103,22 @@ const buyCredit = async (req, res, next) => {
                   <span>${other.credits} Fileservice credit(s)</span>
                   <span style="float: right">${Number(
                     other.netAmount - other.fee - other.vatCharge
-                  )}</span>
+                  ).toFixed(2)}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
                   <span>Handling fee</span>
-                  <span style="float: right">${other.fee}</span>
+                  <span style="float: right">${Number(other.fee).toFixed(2)}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
                   <span>VAT(${other.tax}%)</span>
-                  <span style="float: right">${other.vatCharge}</span>
+                  <span style="float: right">${Number(other.vatCharge).toFixed(2)}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p style="font-weight: bold;">
                   <span>Amount charged</span>
-                  <span style="float: right">${other.netAmount} SEK</span>
+                  <span style="float: right">${Number(other.netAmount).toFixed(2)} SEK</span>
                 </p>
               </div>
               <div style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding: 2vh 0; margin: 4vh 4vw">
@@ -139,7 +139,7 @@ const buyCredit = async (req, res, next) => {
               <div style="display: flex; padding-top: 2vh">
                   <div style="flex-direction: column; padding: 0 4vw;">
                       <p style="font-weight: bold">AMOUNT PAID</p>
-                      <p>Kr${other.netAmount.toFixed(2)}</p>
+                      <p>${Number(other.netAmount).toFixed(2)}</p>
                   </div>
                   <div style="flex-direction: column; padding: 0 4vw">
                       <p style="font-weight: bold">DATE PAID</p>
@@ -177,22 +177,22 @@ const buyCredit = async (req, res, next) => {
                   <span>${other.credits} Fileservice credit(s)</span>
                   <span style="float: right">${Number(
                     other.netAmount - other.fee - other.vatCharge
-                  )}</span>
+                  ).toFixed(2)}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
                   <span>Handling fee</span>
-                  <span style="float: right">${other.fee}</span>
+                  <span style="float: right">${Number(other.fee).toFixed(2)}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p>
                   <span>VAT(${other.tax}%)</span>
-                  <span style="float: right">${other.vatCharge}</span>
+                  <span style="float: right">${Number(other.vatCharge).toFixed(2)}</span>
                 </p>
                 <div style="border: 1px solid #80808075"></div>
                 <p style="font-weight: bold;">
                   <span>Amount charged</span>
-                  <span style="float: right">${other.netAmount} SEK</span>
+                  <span style="float: right">${Number(other.netAmount).toFixed(2)} SEK</span>
                 </p>
               </div>
               <div style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding: 2vh 0; margin: 4vh 4vw">
