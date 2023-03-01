@@ -118,6 +118,7 @@ const buyCredit = async (req, res, next) => {
                   <span>VAT(${other.tax}%)</span>
                   <span style="float: right">${Number(other.vatCharge).toFixed(2)}</span>
                 </p>
+                ${other.tax === 0 && `<p style="float: left">Tax to be paid on reverse charge basis</p>`}
                 <div style="border: 1px solid #80808075"></div>
                 <p style="font-weight: bold;">
                   <span>Amount charged</span>
@@ -134,6 +135,7 @@ const buyCredit = async (req, res, next) => {
             <p style="text-align: center;">OEM Automotive Svenska AB – Org: 559417-9839 – VAT: SE559417983901</p>
           </div>
         </div>`;
+      
       const adminMail = `
         <div style="display: flex; justify-content: center">
           <div style="padding: 10vh 14vw;">
@@ -192,6 +194,7 @@ const buyCredit = async (req, res, next) => {
                   <span>VAT(${other.tax}%)</span>
                   <span style="float: right">${Number(other.vatCharge).toFixed(2)}</span>
                 </p>
+                ${other.tax === 0 && `<p style="float: left">Tax to be paid on reverse charge basis</p>`}
                 <div style="border: 1px solid #80808075"></div>
                 <p style="font-weight: bold;">
                   <span>Amount charged</span>
