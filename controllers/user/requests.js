@@ -65,7 +65,7 @@ const updateUpload = async (req, res, next) => {
 const uploadUploadDataSave = async (req, res, next) => {
   try {
     const data = JSON.parse(req.body.data);
-    const result1 = await Upload.updateOne(
+    await Upload.updateOne(
       { _id: data.id },
       {
         $push: {
@@ -85,30 +85,13 @@ const uploadUploadDataSave = async (req, res, next) => {
       credit: data.credit,
       date: data.date,
     };
-    const exist = await CreditHistory.findOne({
-      orderId: data.orderId,
-      userId: data.userId,
-    });
     let user = await Users.findOne({ _id: data.userId });
-    let result2;
-    if (exist) {
-      const updataCredit = user.credit + exist.credit - data.credit;
-      await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
-      await CreditHistory.updateOne(
-        {
-          orderId: data.orderId,
-        },
-        {
-          credit: data.credit,
-          date: data.date,
-        }
-      );
-    } else {
-      const updataCredit = user.credit - data.credit;
-      await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
-      const d = new CreditHistory(credit);
-      result2 = d.save();
-    }
+    
+    const updataCredit = user.credit - data.credit;
+    await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
+    const d = new CreditHistory(credit);
+    await d.save();
+
     const userMail = `
       <div style="padding: 10vh 14vw;">
         <div style="text-align: center;">
@@ -183,14 +166,23 @@ const uploadStatusSave = async (req, res, next) => {
     const data = req.body.data;
     if (data.status === "cancelled") {
       let user = await Users.findOne({ _id: data.userId });
-      await CreditHistory.updateOne(
+      let history = await CreditHistory.find({ orderId: data.orderId, userId: data.userId }, {
+        credit: 1,
+      })
+      let totalHistory = 0;
+      history.map((item) => { 
+        totalHistory += item.credit;
+      })
+      await CreditHistory.remove(
         { orderId: data.orderId, userId: data.userId },
         {
           credit: 0,
         }
       );
-      const updataCredit = user.credit + data.credit;
+
+      const updataCredit = user.credit + totalHistory;
       await Users.updateOne({ _id: data.userId }, { credit: updataCredit });
+      
       const userMail = `
         <div style="padding: 10vh 14vw;">
           <div style="text-align: center;">
