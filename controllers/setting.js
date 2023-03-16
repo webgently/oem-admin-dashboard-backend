@@ -34,6 +34,8 @@ const savePrivacy = async (req, res, next) => {
     },
     { privacy: privacyMsg }
   );
+  const admin = await Users.findOne({ permission: "admin" })
+  req.app.get("io").emit("privacy", {adminId: admin._id})
   res.send({ status: true });
 };
 
