@@ -1,5 +1,6 @@
 const { Users } = require("../models/sign");
 const { Privacy } = require("../models/privacy");
+const { New } = require("../models/news");
 const { Daily } = require("../models/daily");
 const { Logo } = require("../models/logo");
 const { Bg } = require("../models/bg");
@@ -27,26 +28,33 @@ const updateProfile = async (req, res, next) => {
 };
 
 const savePrivacy = async (req, res, next) => {
-  const { id, privacyMsg } = req.body;
-  await Privacy.updateOne(
-    {
-      _id: id,
-    },
-    { privacy: privacyMsg }
-  );
+  const { privacyMsg, newsMsg, action } = req.body;
   const admin = await Users.findOne({ permission: "admin" })
-  req.app.get("io").emit("privacy", {adminId: admin._id})
+  if (action === 'privacy') {
+    await Privacy.updateOne(
+      { privacy: privacyMsg }
+    );
+    req.app.get("io").emit("privacy", { adminId: admin._id })
+  } else { 
+    await New.updateOne(
+      { new: newsMsg }
+    );
+    req.app.get("io").emit("news", { adminId: admin._id })
+  }
   res.send({ status: true });
 };
 
-const getPrivacy = async (req, res, next) => {
-  const data = await Privacy.findOne({});
-  if (data) {
-    res.send({ status: false, _id: data._id, privacy: data.privacy });
+const getContents = async (req, res, next) => {
+  const data1 = await Privacy.findOne({});
+  const data2 = await New.findOne({});
+  if (data1 && data2) {
+    res.send({ status: false, privacy: data1.privacy, new: data2.new });
   } else {
     const privacy = new Privacy({ privacy: "" });
-    const db = await privacy.save();
-    res.send({ status: false, _id: db._id, privacy: db.privacy });
+    const db1 = await privacy.save();
+    const news = new New({ new: "" });
+    const db2 = await news.save();
+    res.send({ status: false, privacy: db1.privacy, new: db2.new });
   }
 };
 
@@ -246,7 +254,7 @@ const getBg = async (req, res, next) => {
 module.exports = {
   updateProfile,
   savePrivacy,
-  getPrivacy,
+  getContents,
   changePassword,
   getAllDaily,
   updateDaily,

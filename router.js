@@ -41,7 +41,7 @@ router.post("/checkResetLink", checkResetLink);
 const {
   updateProfile,
   savePrivacy,
-  getPrivacy,
+  getContents,
   changePassword,
   getAllDaily,
   updateDaily,
@@ -58,7 +58,7 @@ const {
 } = require("./controllers/setting");
 router.post("/updateProfile", updateProfile);
 router.post("/savePrivacy", savePrivacy);
-router.post("/getPrivacy", getPrivacy);
+router.post("/getContents", getContents);
 router.post("/changePassword", changePassword);
 router.post("/getAllDaily", getAllDaily);
 router.post("/updateDaily", updateDaily);
