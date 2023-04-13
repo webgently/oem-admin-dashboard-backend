@@ -48,6 +48,46 @@ const signup = async (req, res, next) => {
             <p style="padding-top: 20px;">Did you know 1 hk is = 0,73549875 kW?</p>
           </div>
         </div>`;
+      const adminMail = `
+        <div style="display: flex; justify-content: center">
+          <div style="padding: 10vh 14vw;">
+            <h1>Oemservice – Your account is created</h1>
+            <div style="text-align: left; padding-top: 40px;">
+              <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
+            </div>
+            <div style="font-size: 18px; text-align: left; padding-top: 40px;">
+              <p>Dear ${process.env.SUPPORT_NAME}, ${result.name} created an account with ${result.email}.</p> 
+            </div>
+            <div style="padding-top: 4vh; text-align: left;">
+              <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
+                <a href="${process.env.SITE_DOMAIN}" style="color: white; text-decoration: none;">GO TO PORTAL NOW</a>
+              </button>
+            </div>
+          </div>
+        </div>`;
+
+      const adminSetting = mailjet
+        .post('send', { version: 'v3.1' })
+        .request({
+          Messages: [
+            {
+              From: {
+                Email: process.env.EMAIL_DOMAIN,
+                Name: "OEMSERVICE"
+              },
+              To: [
+                {
+                  Email: process.env.SUPPORT_EMAIL,
+                  Name: process.env.SUPPORT_NAME
+                }
+              ],
+              Subject: `Created new account`,
+              TextPart: `from ${result.email}`,
+              HTMLPart: adminMail,
+            }
+          ]
+        })
+      
       const userSetting = mailjet
       .post('send', { version: 'v3.1' })
       .request({
@@ -73,6 +113,12 @@ const signup = async (req, res, next) => {
         console.log(result.body)
       })
       .catch((err) => {
+        console.log(err.statusCode)
+      })
+
+      adminSetting.then((result) => {
+        console.log(result.body)
+      }).catch((err) => {
         console.log(err.statusCode)
       })
 
