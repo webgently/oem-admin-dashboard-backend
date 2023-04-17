@@ -314,6 +314,53 @@ const updatestatus = async (req, res, next) => {
     },
     { status: req.body.data.status }
   );
+
+  if(req.body.data.status) {
+    const userMail = `
+    <div style="display: flex; justify-content: center">
+      <div style="padding: 10vh 14vw;">
+        <h1>Oemservice – Your account is activited</h1>
+        <div style="text-align: left; padding-top: 40px;">
+          <img src="https://ipfs.io/ipfs/Qmbe4x6BizKws5BbNRuLxZrP14vhDVgbNRHhBL68amnB5Z" width="75%" />
+        </div>
+        <div style="font-size: 18px; text-align: left; padding-top: 40px;">
+          <p>Dear ${result.name}, I think when we "activate" user account from admin side, there should be an email sent saying "Your account is now approved, please login to upload/download your files"</p> 
+        </div>
+        <div style="padding-top: 4vh; text-align: left;">
+          <button style="padding: 10px 20px; background-color: #0a74ed; border: none; border-radius: 4px; cursor: pointer;">
+            <a href="${process.env.SITE_DOMAIN}" style="color: white; text-decoration: none;">GO TO PORTAL NOW</a>
+          </button>
+        </div>
+      </div>
+    </div>`;
+    const userSetting = mailjet
+    .post('send', { version: 'v3.1' })
+    .request({
+      Messages: [
+        {
+          From: {
+            Email: process.env.EMAIL_DOMAIN,
+            Name: `OEMSERVICE`
+          },
+          To: [
+            {
+              Email: result.email,
+              Name: ""
+            }
+          ],
+          Subject: "Oemservice – Your account is created",
+          TextPart: `Oemservice – Your account is created`,
+          HTMLPart: userMail,
+        }
+      ]
+    })
+    userSetting.then((result) => {
+      console.log(result.body)
+    })
+    .catch((err) => {
+      console.log(err.statusCode)
+    })
+  }
   res.send("success");
 };
 
